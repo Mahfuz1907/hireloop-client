@@ -2,22 +2,23 @@ import { Geist, Geist_Mono } from "next/font/google"
 
 import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
-import { cn } from "@/lib/utils";
-import { Metadata } from "next";
-import NavFootWrapper from '@/components/NavFootWrapper'
+import { cn } from "@/lib/utils"
+import { Metadata } from "next"
+import NavFootWrapper from "@/components/NavFootWrapper"
+import { Toaster } from "@/components/ui/sonner"
 
-const geist = Geist({subsets:['latin'],variable:'--font-sans'})
+const geist = Geist({ subsets: ["latin"], variable: "--font-sans" })
 
 const fontMono = Geist_Mono({
   subsets: ["latin"],
   variable: "--font-mono",
 })
 
-export const metadata:Metadata = {
-  title: 'HireLoop',
+export const metadata: Metadata = {
+  title: "HireLoop",
   icons: {
-    icon: '/globe.png'
-  }
+    icon: "/globe.png",
+  },
 }
 
 export default function RootLayout({
@@ -29,16 +30,20 @@ export default function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
-      className={cn("antialiased", fontMono.variable, "font-sans", geist.variable)}
+      className={cn(
+        "antialiased",
+        fontMono.variable,
+        "font-sans",
+        geist.variable
+      )}
     >
       <body>
         <ThemeProvider>
           <NavFootWrapper>
-          {/* main components */}
-          <div className="grow">
-            {children}
-          </div>
+            {/* main components */}
+            <div className="grow">{children}</div>
           </NavFootWrapper>
+          <Toaster />
         </ThemeProvider>
       </body>
     </html>
