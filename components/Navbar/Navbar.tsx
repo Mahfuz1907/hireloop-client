@@ -46,15 +46,14 @@ const UserImage = () => {
           className={`${role === "admin" ? "bg-green-600 dark:bg-green-800" : role === "seeker" ? "bg-blue-600 dark:bg-blue-800" : "bg-red-600 dark:bg-red-800"}`}
         />
       </Avatar>
-      <Link
-        href={`${role === "admin" ? "/admin" : role === "recruiter" ? "/recruiter" : "/seeker"}`}
-      >
+      <Link href={`/dashboard/${role}`}>
         <Button className={"text-base font-medium"}>
           {role === "admin"
             ? "Admin"
             : role === "recruiter"
               ? "Recruiter"
-              : "Job Seeker"}
+              : "Job Seeker"}{" "}
+          Dashboard
         </Button>
       </Link>
     </div>
@@ -146,10 +145,6 @@ export default function Navbar() {
                 Log In
               </Link>
             )}
-
-            <Button className="rounded-xl bg-indigo-600 px-5 py-2 font-medium text-white shadow-lg shadow-indigo-600/20 transition-all hover:bg-indigo-500">
-              Get Started
-            </Button>
           </div>
         </div>
 
@@ -217,13 +212,6 @@ export default function Navbar() {
                       Log In
                     </Link>
                   )}
-
-                  <Button
-                    onClick={() => setIsOpen(false)}
-                    className="w-full rounded-xl bg-indigo-600 py-2 font-medium text-white shadow-lg shadow-indigo-600/20 transition-all hover:bg-indigo-500"
-                  >
-                    Get Started
-                  </Button>
                 </div>
               </div>
             </SheetContent>
