@@ -36,23 +36,27 @@ const UserInfo = () => {
 
 const UserImage = () => {
   const isLoggedIn = UserInfo()
+  const role = isLoggedIn?.userRole
 
   return (
     <div className="flex flex-row items-center justify-start gap-5">
       <Avatar>
         <AvatarFallback>{isLoggedIn.userLogo}</AvatarFallback>
         <AvatarBadge
-          className={`${isLoggedIn.userRole === "admin" ? "bg-green-600 dark:bg-green-800" : isLoggedIn.userRole === "seeker" ? "bg-blue-600 dark:bg-blue-800" : "bg-red-600 dark:bg-red-800"}`}
+          className={`${role === "admin" ? "bg-green-600 dark:bg-green-800" : role === "seeker" ? "bg-blue-600 dark:bg-blue-800" : "bg-red-600 dark:bg-red-800"}`}
         />
       </Avatar>
-      <h1 className="font-mediums text-base">
-        Welcome{" "}
-        <span
-          className={`${isLoggedIn.userRole === "admin" ? "text-green-600 dark:text-green-800" : isLoggedIn.userRole === "seeker" ? "text-blue-600 dark:text-blue-800" : "text-red-600 dark:text-red-800"}`}
-        >
-          {isLoggedIn.user?.name}
-        </span>
-      </h1>
+      <Link
+        href={`${role === "admin" ? "/admin" : role === "recruiter" ? "/recruiter" : "/seeker"}`}
+      >
+        <Button className={"text-base font-medium"}>
+          {role === "admin"
+            ? "Admin"
+            : role === "recruiter"
+              ? "Recruiter"
+              : "Job Seeker"}
+        </Button>
+      </Link>
     </div>
   )
 }
@@ -195,7 +199,7 @@ export default function Navbar() {
 
                 <div className="flex flex-col gap-3">
                   {isLoggedIn.user ? (
-                    <>
+                    <div className="flex flex-col items-start justify-between gap-5">
                       <UserImage />
                       <div
                         onClick={() => setIsOpen(false)}
@@ -203,7 +207,7 @@ export default function Navbar() {
                       >
                         <LogOutButton />
                       </div>
-                    </>
+                    </div>
                   ) : (
                     <Link
                       href="/login"
