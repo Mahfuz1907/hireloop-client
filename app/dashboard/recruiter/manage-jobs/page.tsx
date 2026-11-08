@@ -1,4 +1,4 @@
-import { GetJob, GetJobByRecruiter } from "@/app/lib/actions/jobs"
+import { GetJobByRecruiter } from "@/app/lib/actions/jobs"
 import { Button } from "@/components/ui/button"
 import { Job } from "@/lib/types"
 import { ChevronRight, Code, Inbox, MapPin, Plus, Users } from "lucide-react"
@@ -6,6 +6,15 @@ import Link from "next/link"
 import ActionButtons from "./ActionButtons"
 import { auth } from "@/auth"
 import { headers } from "next/headers"
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table"
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
 
 const ManageJobPage = async () => {
   const session = await auth.api.getSession({
@@ -15,7 +24,7 @@ const ManageJobPage = async () => {
 
   const jobs = await GetJobByRecruiter(email as string)
   return (
-    <div className="min-h-screen space-y-8 bg-[#09090b] p-4 font-sans text-white md:p-8">
+    <div className="space-y-8 bg-[#09090b] p-4 font-sans text-white md:p-8">
       {/* Top Header & Breadcrumb */}
       <div className="flex flex-col items-start justify-between gap-4 border-b border-gray-800/80 pb-6 md:flex-row md:items-center">
         <div>
@@ -68,25 +77,44 @@ const ManageJobPage = async () => {
           </div>
         ) : (
           /* 🟢 Data Table (Jokhon jobs thakbe) */
-          <div className="overflow-x-auto">
-            <table className="w-full border-collapse text-left">
-              <thead>
-                <tr className="border-b border-gray-800/80 text-[11px] font-semibold tracking-wider text-gray-500 uppercase">
-                  <th className="px-6 py-4">Job Title & Dept</th>
-                  <th className="px-6 py-4">Company & Location</th>
-                  <th className="px-6 py-4">Type</th>
-                  <th className="px-6 py-4">Compensation</th>
-                  <th className="px-6 py-4">Applicants</th>
-                  <th className="px-6 py-4">Status</th>
-                  <th className="px-6 py-4">Deadline</th>
-                  <th className="px-6 py-4 text-right">Actions</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-800/40 text-sm">
+          <ScrollArea className="w-150 rounded-2xl whitespace-nowrap sm:w-155 md:w-175 lg:w-250 xl:w-full">
+            <Table className="border-collapse overflow-hidden rounded-2xl border border-gray-800/80 bg-[#121216] text-left">
+              <TableHeader>
+                <TableRow className="border-b border-gray-800/80 text-[11px] font-semibold tracking-wider text-gray-500 uppercase hover:bg-transparent">
+                  <TableHead className="px-6 py-4 text-gray-500">
+                    Job Title & Dept
+                  </TableHead>
+                  <TableHead className="px-6 py-4 text-gray-500">
+                    Company & Location
+                  </TableHead>
+                  <TableHead className="px-6 py-4 text-gray-500">
+                    Type
+                  </TableHead>
+                  <TableHead className="px-6 py-4 text-gray-500">
+                    Compensation
+                  </TableHead>
+                  <TableHead className="px-6 py-4 text-gray-500">
+                    Applicants
+                  </TableHead>
+                  <TableHead className="px-6 py-4 text-gray-500">
+                    Status
+                  </TableHead>
+                  <TableHead className="px-6 py-4 text-gray-500">
+                    Deadline
+                  </TableHead>
+                  <TableHead className="px-6 py-4 text-right text-gray-500">
+                    Actions
+                  </TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody className="divide-y divide-gray-800/40 text-sm">
                 {jobs.map((job: Job) => (
-                  <tr key={job._id} className="transition hover:bg-gray-900/40">
+                  <TableRow
+                    key={job._id}
+                    className="border-b border-gray-800/40 transition hover:bg-gray-900/40"
+                  >
                     {/* Job Title & Dept */}
-                    <td className="px-6 py-4">
+                    <TableCell className="px-6 py-4">
                       <div className="flex items-center gap-3">
                         <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-gray-800 bg-[#18181b] text-indigo-400">
                           <Code className="h-4 w-4" />
@@ -100,43 +128,45 @@ const ManageJobPage = async () => {
                           </p>
                         </div>
                       </div>
-                    </td>
+                    </TableCell>
 
                     {/* Company & Location */}
-                    <td className="px-6 py-4">
+                    <TableCell className="px-6 py-4">
                       <p className="text-xs font-medium text-gray-200">
                         {job.companyName}
                       </p>
                       <p className="mt-0.5 flex items-center gap-1 text-[11px] text-gray-400">
-                        <MapPin className="h-3 w-3 text-gray-500" />
-                        {job.isRemote
-                          ? `Remote (${job.location})`
-                          : job.location}
+                        <MapPin className="h-3 w-3 shrink-0 text-gray-500" />
+                        <span className="max-w-[180px] truncate">
+                          {job.isRemote
+                            ? `Remote (${job.location})`
+                            : job.location}
+                        </span>
                       </p>
-                    </td>
+                    </TableCell>
 
                     {/* Type */}
-                    <td className="px-6 py-4">
-                      <button className="rounded-full border border-gray-800 bg-[#18181b] px-2.5 py-0.5 text-xs font-normal text-gray-300">
+                    <TableCell className="px-6 py-4">
+                      <span className="inline-block rounded-full border border-gray-800 bg-[#18181b] px-2.5 py-0.5 text-xs font-normal whitespace-nowrap text-gray-300">
                         {job.jobType.split("-").join(" ")}
-                      </button>
-                    </td>
+                      </span>
+                    </TableCell>
 
                     {/* Compensation */}
-                    <td className="px-6 py-4 text-xs font-semibold text-gray-200">
+                    <TableCell className="px-6 py-4 text-xs font-semibold whitespace-nowrap text-gray-200">
                       {job.minSalary}-{job.maxSalary} euro {job.frequency}
-                    </td>
+                    </TableCell>
 
                     {/* Applicants */}
-                    <td className="px-6 py-4">
+                    <TableCell className="px-6 py-4">
                       {/* <span className="flex items-center gap-1.5 text-xs font-medium text-gray-300">
-                        <Users className="h-3.5 w-3.5 text-gray-400" />
-                        {job.applicantsCount} Candidates
-                      </span> */}
-                    </td>
+              <Users className="h-3.5 w-3.5 text-gray-400" />
+              {job.applicantsCount} Candidates
+            </span> */}
+                    </TableCell>
 
                     {/* Status */}
-                    <td className="px-6 py-4">
+                    <TableCell className="px-6 py-4 whitespace-nowrap">
                       <span
                         className={`inline-flex items-center gap-1.5 text-xs font-medium ${
                           job.status === "Active"
@@ -153,27 +183,28 @@ const ManageJobPage = async () => {
                         ></span>
                         {job.status}
                       </span>
-                    </td>
+                    </TableCell>
 
                     {/* Deadline */}
-                    <td className="px-6 py-4">
+                    <TableCell className="px-6 py-4 whitespace-nowrap">
                       <p className="text-xs font-medium text-gray-200">
                         {job.deadline}
                       </p>
                       <p className="mt-0.5 text-[11px] text-gray-500">
                         {job.deadline}
                       </p>
-                    </td>
+                    </TableCell>
 
                     {/* Actions */}
-                    <td className="px-6 py-4 text-right">
+                    <TableCell className="px-6 py-4 text-right whitespace-nowrap">
                       <ActionButtons job={job} />
-                    </td>
-                  </tr>
+                    </TableCell>
+                  </TableRow>
                 ))}
-              </tbody>
-            </table>
-          </div>
+              </TableBody>
+            </Table>
+            <ScrollBar orientation="horizontal" />
+          </ScrollArea>
         )}
       </div>
     </div>

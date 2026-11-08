@@ -21,6 +21,12 @@ export const GetJob = async () => {
   return result
 }
 
+export const GetJobById = async (id: string) => {
+  const res = await fetch(`${BASE_URL}/jobs/${id}`)
+  const result = res.json()
+  return result
+}
+
 export const GetJobByRecruiter = async (email: string) => {
   const res = await fetch(`${BASE_URL}/jobs/recruiter/${email}`)
   const result = res.json()
@@ -33,4 +39,15 @@ export const DeleteJob = async (id: string) => {
   })
   const result = res.json()
   return result
+}
+
+export const EditJob = async (id: string, data: AddJobTypes) => {
+  const res = await fetch(`${BASE_URL}/jobs/edit/${id}`, {
+    method: "PUT",
+    headers: {
+      "content-type": "application/json",
+    },
+    body: JSON.stringify(data),
+  })
+  return res.json()
 }

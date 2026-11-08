@@ -1,9 +1,9 @@
 import { Button } from "@/components/ui/button"
-import { Eye } from "lucide-react"
+import { Eye, Pencil } from "lucide-react"
 import React from "react"
 import DeleteDialogue from "./DeleteDialogue"
 import { Job } from "@/lib/types"
-import EditDialogue from "./EditDialogue"
+import Link from "next/link"
 
 const ActionButtons = ({ job }: { job: Job }) => {
   return (
@@ -16,7 +16,14 @@ const ActionButtons = ({ job }: { job: Job }) => {
         <Eye className="h-3 w-3" />
       </Button>
       {/* edit icon */}
-      <EditDialogue />
+      <Link href={`/dashboard/recruiter/manage-jobs/edit-jobs/${job._id}`}>
+        <Button
+          variant="outline"
+          className="h-8 cursor-pointer rounded-lg border-gray-800 bg-[#18181b] px-2.5 text-xs text-indigo-400 hover:bg-gray-800 hover:text-indigo-300"
+        >
+          <Pencil className="h-3 w-3" />
+        </Button>
+      </Link>
 
       {/* delete icon */}
       <DeleteDialogue job={job} />

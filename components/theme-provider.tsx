@@ -13,6 +13,8 @@ function ThemeProvider({
       defaultTheme="system"
       enableSystem
       disableTransitionOnChange
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      scriptProps={{ type: "application/json" } as any}
       {...props}
     >
       <ThemeHotkey />

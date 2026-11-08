@@ -1,23 +1,6 @@
 "use client"
 
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog"
-import {
-  Building2,
-  Calendar,
-  ChevronRight,
-  Euro,
-  MapPin,
-  Pencil,
-  Send,
-} from "lucide-react"
+import { Building2, Calendar, Euro, MapPin } from "lucide-react"
 
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
@@ -25,8 +8,7 @@ import { toast } from "sonner"
 import { useRouter } from "next/navigation"
 import { useSession } from "@/app/lib/auth-client"
 import { useState } from "react"
-import { AddJobTypes } from "@/lib/types"
-import Link from "next/link"
+import { AddJobTypes, Job } from "@/lib/types"
 import {
   Select,
   SelectContent,
@@ -36,26 +18,28 @@ import {
 } from "@/components/ui/select"
 import { Switch } from "@/components/ui/switch"
 import { Textarea } from "@/components/ui/textarea"
+import Link from "next/link"
+import { EditJob } from "@/app/lib/actions/jobs"
 
-const EditDialogue = () => {
+const EditForm = ({ job }: { job: Job }) => {
   const router = useRouter()
   const { data: session } = useSession()
   const userName = session?.user?.name
   const userEmail = session?.user?.email
   const [formData, setFormData] = useState<AddJobTypes>({
-    title: "",
-    companyName: "",
-    category: "",
-    jobType: "Full-time",
-    isRemote: false,
-    location: "",
-    deadline: "",
-    minSalary: "",
-    maxSalary: "",
-    frequency: "hourly",
-    status: "",
-    responsibilities: "",
-    qualifications: "",
+    title: job.title,
+    companyName: job.companyName,
+    category: job.category,
+    jobType: job.jobType,
+    isRemote: job.isRemote,
+    location: job.location,
+    deadline: job.deadline,
+    minSalary: job.minSalary,
+    maxSalary: job.maxSalary,
+    frequency: job.frequency,
+    status: job.status,
+    responsibilities: job.responsibilities,
+    qualifications: job.qualifications,
     recruiterName: "",
     recruiterEmail: "",
   })
@@ -79,35 +63,28 @@ const EditDialogue = () => {
 
     console.log(jobData)
 
-    // const result = await AddJob(jobData)
+    const result = await EditJob(job._id, jobData)
 
-    // if (result.acknowledged || result.ok || result.success) {
-    //   toast.success("Job added successfully", { position: "top-center" })
-    //   router.push("/dashboard/recruiter")
-    // } else {
-    //   toast.error("Job add failed", { position: "top-center" })
-    // }
+    if (result.acknowledged || result.ok || result.success) {
+      toast.success("Job Edited successfully", { position: "top-center" })
+      router.push("/dashboard/recruiter/manage-jobs")
+    } else {
+      toast.error("Job edit failed", { position: "top-center" })
+    }
   }
   return (
-    <Dialog>
-      <DialogTrigger
-        render={
-          <Button
-            variant="outline"
-            className="h-8 cursor-pointer rounded-lg border-gray-800 bg-[#18181b] px-2.5 text-xs text-indigo-400 hover:bg-gray-800 hover:text-indigo-300"
-          >
-            <Pencil className="h-3 w-3" />
-          </Button>
-        }
-      />
-      <DialogContent className="sm:max-w-sm">
-        <DialogHeader>
-          <DialogTitle>Edit profile</DialogTitle>
-          <DialogDescription>
-            Make changes to your profile here. Click save when you&apos;re done.
-          </DialogDescription>
-        </DialogHeader>
+    <div className="min-h-screen bg-[#09090b] p-4 font-sans text-white md:p-10">
+      <div className="mx-auto max-w-4xl space-y-8">
         <form onSubmit={handleSubmit} className="space-y-8">
+          {/* Top Breadcrumb & Header Bar */}
+          <div className="flex flex-col items-start justify-between gap-4 border-b border-gray-800/80 pb-6 sm:flex-row sm:items-center">
+            <div>
+              <h1 className="text-2xl font-bold tracking-tight text-white md:text-3xl">
+                {/* Edit {job.title} */}
+                Update Job
+              </h1>
+            </div>
+          </div>
           <div className="space-y-10">
             {/* ================= SECTION 1: Basic Information ================= */}
             <div className="space-y-6">
@@ -129,6 +106,7 @@ const EditDialogue = () => {
                   name="title"
                   required
                   value={formData.title}
+                  defaultValue={job.title}
                   onChange={handleChange}
                   placeholder="e.g. Frontend Developer"
                   className="h-12 rounded-xl border-gray-800 bg-[#121216] text-sm text-white focus-visible:ring-indigo-500"
@@ -196,7 +174,10 @@ const EditDialogue = () => {
                         key={type}
                         type="button"
                         onClick={() =>
-                          setFormData((prev) => ({ ...prev, jobType: type }))
+                          setFormData((prev) => ({
+                            ...prev,
+                            jobType: type,
+                          }))
                         }
                         className={`cursor-pointer rounded-lg py-2 text-xs font-medium transition ${
                           formData.jobType === type
@@ -408,26 +389,28 @@ const EditDialogue = () => {
 
             {/* Bottom Action Footer */}
             <div className="flex justify-end gap-3 border-t border-gray-800 pt-6">
-              <Button
-                type="button"
-                variant="outline"
-                className="border-gray-800 bg-transparent text-xs text-gray-300 hover:bg-gray-900"
-              >
-                Save as Draft
-              </Button>
+              <Link href={"/dashboard/recruiter/manage-jobs"}>
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="border-gray-800 bg-transparent text-xs text-gray-300 hover:bg-gray-900"
+                >
+                  Go Back
+                </Button>
+              </Link>
               <Button
                 type="submit"
 
                 className="cursor-pointer rounded-xl bg-indigo-600 px-6 py-2.5 text-xs font-medium text-white shadow-lg shadow-indigo-600/20 hover:bg-indigo-500"
               >
-                Publish Job Listing
+                Update Job Listing
               </Button>
             </div>
           </div>
         </form>
-      </DialogContent>
-    </Dialog>
+      </div>
+    </div>
   )
 }
 
-export default EditDialogue
+export default EditForm
