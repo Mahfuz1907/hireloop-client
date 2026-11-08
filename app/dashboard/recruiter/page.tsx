@@ -56,7 +56,7 @@ const RecruiterDashboardPage = async () => {
   })
   const email = session?.user?.email
   const jobs = await GetJobByRecruiter(email as string)
-
+  const jobLimit = 5
   const activeJobs = jobs.filter((job: Job) => job.status === "Active").length
   return (
     <div className="min-h-screen space-y-8 bg-[#09090b] p-4 font-sans text-white md:p-8">
@@ -105,7 +105,9 @@ const RecruiterDashboardPage = async () => {
           </CardHeader>
           <CardContent>
             <p className="text-xs font-medium text-gray-400">Active Jobs</p>
-            <h3 className="mt-1 text-2xl font-bold text-white">{activeJobs}</h3>
+            <h3 className="mt-1 text-2xl font-bold text-white">
+              {activeJobs}/{jobLimit}
+            </h3>
           </CardContent>
         </Card>
 

@@ -21,6 +21,13 @@ export const GetJob = async () => {
   return result
 }
 
+export const GetJobPerPage = async (pageNumber: number, limit: number) => {
+  const res = await fetch(
+    `${BASE_URL}/jobs/page/?page=${pageNumber}&limit=${limit}`
+  )
+  return res.json()
+}
+
 export const GetJobById = async (id: string) => {
   const res = await fetch(`${BASE_URL}/jobs/${id}`)
   const result = res.json()
