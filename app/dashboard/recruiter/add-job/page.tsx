@@ -45,6 +45,7 @@ export default function PostNewJobPage() {
     minSalary: "",
     maxSalary: "",
     frequency: "hourly",
+    status: "",
     responsibilities: "",
     qualifications: "",
     recruiterName: "",
@@ -64,6 +65,7 @@ export default function PostNewJobPage() {
 
     const jobData = {
       ...formData,
+      status: "Active",
       recruiterName: userName,
       recruiterEmail: userEmail,
     }

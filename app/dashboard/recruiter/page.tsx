@@ -2,7 +2,9 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { FileText, Users, Zap, CheckCircle2, ArrowUpRight } from "lucide-react"
 import Image from "next/image"
-import { GetJob } from "@/app/lib/actions/jobs"
+import { GetJobByRecruiter } from "@/app/lib/actions/jobs"
+import { auth } from "@/auth"
+import { headers } from "next/headers"
 
 const mockApplications = [
   {
@@ -48,9 +50,11 @@ const mockApplications = [
 ]
 
 const RecruiterDashboardPage = async () => {
-  // const res = await fetch(`${process.env.NEXT_PUBLIC_API}/jobs`)
-  // const jobs = await res.json()
-  const jobs = await GetJob()
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  })
+  const email = session?.user?.email
+  const jobs = await GetJobByRecruiter(email as string)
   return (
     <div className="min-h-screen space-y-8 bg-[#09090b] p-4 font-sans text-white md:p-8">
       {/* Welcome Banner Header */}

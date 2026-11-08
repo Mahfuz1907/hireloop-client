@@ -20,3 +20,17 @@ export const GetJob = async () => {
   const result = res.json()
   return result
 }
+
+export const GetJobByRecruiter = async (email: string) => {
+  const res = await fetch(`${BASE_URL}/jobs/recruiter/${email}`)
+  const result = res.json()
+  return result
+}
+
+export const DeleteJob = async (id: string) => {
+  const res = await fetch(`${BASE_URL}/jobs/delete/${id}`, {
+    method: "DELETE",
+  })
+  const result = res.json()
+  return result
+}

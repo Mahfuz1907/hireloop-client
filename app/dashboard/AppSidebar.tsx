@@ -122,8 +122,8 @@ export async function AppSidebar() {
   const role = session?.user?.role
 
   return (
-    <Sidebar className="top-14.5 z-40 h-screen">
-      <SidebarContent>
+    <Sidebar className="top-14.5 z-40 h-screen bg-[#09090b]">
+      <SidebarContent className="bg-[#09090b] text-white">
         <SidebarGroup>
           <SidebarMenu>
             {menuItemsByRoles[role!].map((item) => (

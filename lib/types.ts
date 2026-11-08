@@ -20,6 +20,7 @@ export interface Job {
   minSalary: string
   maxSalary: string
   frequency: string
+  status: "Active" | "Expired"
   responsibilities: string
   qualifications: string
   recruiterName: string
@@ -37,6 +38,7 @@ export interface AddJobTypes {
   minSalary: string
   maxSalary: string
   frequency: string
+  status: string
   responsibilities: string
   qualifications: string
   recruiterName: string | undefined

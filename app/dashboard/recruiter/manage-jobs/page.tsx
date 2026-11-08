@@ -1,23 +1,19 @@
-import { GetJob } from "@/app/lib/actions/jobs"
+import { GetJob, GetJobByRecruiter } from "@/app/lib/actions/jobs"
 import { Button } from "@/components/ui/button"
 import { Job } from "@/lib/types"
-import {
-  Badge,
-  ChevronRight,
-  Code,
-  Inbox,
-  Loader2,
-  MapPin,
-  MoreVertical,
-  Pencil,
-  Plus,
-  Trash2,
-  Users,
-} from "lucide-react"
+import { ChevronRight, Code, Inbox, MapPin, Plus, Users } from "lucide-react"
 import Link from "next/link"
+import ActionButtons from "./ActionButtons"
+import { auth } from "@/auth"
+import { headers } from "next/headers"
 
 const ManageJobPage = async () => {
-  const jobs = await GetJob()
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  })
+  const email = session?.user?.email
+
+  const jobs = await GetJobByRecruiter(email as string)
   return (
     <div className="min-h-screen space-y-8 bg-[#09090b] p-4 font-sans text-white md:p-8">
       {/* Top Header & Breadcrumb */}
@@ -121,17 +117,16 @@ const ManageJobPage = async () => {
 
                     {/* Type */}
                     <td className="px-6 py-4">
-                      <Badge className="rounded-full border border-gray-800 bg-[#18181b] px-2.5 py-0.5 text-xs font-normal text-gray-300">
-                        {job.jobType}
-                      </Badge>
+                      <button className="rounded-full border border-gray-800 bg-[#18181b] px-2.5 py-0.5 text-xs font-normal text-gray-300">
+                        {job.jobType.split("-").join(" ")}
+                      </button>
                     </td>
 
                     {/* Compensation */}
                     <td className="px-6 py-4 text-xs font-semibold text-gray-200">
-                      {job.minSalary}-{job.maxSalary}
+                      {job.minSalary}-{job.maxSalary} euro {job.frequency}
                     </td>
 
-                    {/* Status */}
                     {/* Applicants */}
                     <td className="px-6 py-4">
                       {/* <span className="flex items-center gap-1.5 text-xs font-medium text-gray-300">
@@ -139,8 +134,10 @@ const ManageJobPage = async () => {
                         {job.applicantsCount} Candidates
                       </span> */}
                     </td>
+
+                    {/* Status */}
                     <td className="px-6 py-4">
-                      {/* <span
+                      <span
                         className={`inline-flex items-center gap-1.5 text-xs font-medium ${
                           job.status === "Active"
                             ? "text-emerald-400"
@@ -155,7 +152,7 @@ const ManageJobPage = async () => {
                           }`}
                         ></span>
                         {job.status}
-                      </span> */}
+                      </span>
                     </td>
 
                     {/* Deadline */}
@@ -170,29 +167,7 @@ const ManageJobPage = async () => {
 
                     {/* Actions */}
                     <td className="px-6 py-4 text-right">
-                      <div className="flex items-center justify-end gap-1.5">
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          className="h-8 cursor-pointer rounded-lg border-gray-800 bg-[#18181b] px-2.5 text-xs text-indigo-400 hover:bg-gray-800 hover:text-indigo-300"
-                        >
-                          <Pencil className="mr-1 h-3 w-3" /> Update
-                        </Button>
-                        <Button
-                          size="icon"
-                          variant="ghost"
-                          className="h-8 w-8 cursor-pointer rounded-lg text-gray-400 hover:bg-red-500/10 hover:text-red-400"
-                        >
-                          <Trash2 className="h-3.5 w-3.5" />
-                        </Button>
-                        <Button
-                          size="icon"
-                          variant="ghost"
-                          className="h-8 w-8 cursor-pointer rounded-lg text-gray-400 hover:bg-gray-800 hover:text-white"
-                        >
-                          <MoreVertical className="h-3.5 w-3.5" />
-                        </Button>
-                      </div>
+                      <ActionButtons job={job} />
                     </td>
                   </tr>
                 ))}
