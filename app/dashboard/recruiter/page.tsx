@@ -5,6 +5,7 @@ import Image from "next/image"
 import { GetJobByRecruiter } from "@/app/lib/actions/jobs"
 import { auth } from "@/auth"
 import { headers } from "next/headers"
+import { Job } from "@/lib/types"
 
 const mockApplications = [
   {
@@ -55,6 +56,8 @@ const RecruiterDashboardPage = async () => {
   })
   const email = session?.user?.email
   const jobs = await GetJobByRecruiter(email as string)
+
+  const activeJobs = jobs.filter((job: Job) => job.status === "Active").length
   return (
     <div className="min-h-screen space-y-8 bg-[#09090b] p-4 font-sans text-white md:p-8">
       {/* Welcome Banner Header */}
@@ -102,7 +105,7 @@ const RecruiterDashboardPage = async () => {
           </CardHeader>
           <CardContent>
             <p className="text-xs font-medium text-gray-400">Active Jobs</p>
-            <h3 className="mt-1 text-2xl font-bold text-white">18</h3>
+            <h3 className="mt-1 text-2xl font-bold text-white">{activeJobs}</h3>
           </CardContent>
         </Card>
 
@@ -114,7 +117,9 @@ const RecruiterDashboardPage = async () => {
           </CardHeader>
           <CardContent>
             <p className="text-xs font-medium text-gray-400">Jobs Closed</p>
-            <h3 className="mt-1 text-2xl font-bold text-white">32</h3>
+            <h3 className="mt-1 text-2xl font-bold text-white">
+              {jobs.length - activeJobs}
+            </h3>
           </CardContent>
         </Card>
       </div>
