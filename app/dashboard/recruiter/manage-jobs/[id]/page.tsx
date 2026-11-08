@@ -7,9 +7,7 @@ import {
   ChevronRight,
   Euro,
   Globe,
-  Mail,
   MapPin,
-  User,
   Briefcase,
 } from "lucide-react"
 import Link from "next/link"
@@ -198,29 +196,6 @@ const JobDetailsPage = async ({ params }: JobDetailsTypes) => {
                       {job.location}
                     </p>
                   </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Recruiter Contact Card */}
-            <div className="space-y-4 rounded-2xl border border-gray-800/80 bg-[#121216] p-6 shadow-xl">
-              <h3 className="text-sm font-semibold tracking-wider text-white uppercase">
-                Recruiter Contact
-              </h3>
-              <Separator className="bg-gray-800/80" />
-
-              <div className="space-y-3 text-xs">
-                <div className="flex items-center gap-2 text-gray-300">
-                  <User className="h-4 w-4 text-indigo-400" />
-                  <span className="font-medium text-white">
-                    {job.recruiterName || "Random Recruiter"}
-                  </span>
-                </div>
-                <div className="flex items-center gap-2 text-gray-300">
-                  <Mail className="h-4 w-4 text-indigo-400" />
-                  <span className="truncate">
-                    {job.recruiterEmail || "abc@recruiter.com"}
-                  </span>
                 </div>
               </div>
             </div>

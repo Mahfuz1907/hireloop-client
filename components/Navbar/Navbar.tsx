@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/sheet"
 import Image from "next/image"
 import { signOut, useSession } from "@/app/lib/auth-client"
-import { Avatar, AvatarBadge, AvatarFallback } from "../ui/avatar"
+import { Avatar, AvatarFallback } from "../ui/avatar"
 import { Spinner } from "../ui/spinner"
 import { toast } from "sonner"
 import { useRouter } from "next/navigation"
@@ -42,9 +42,6 @@ const UserImage = () => {
     <div className="flex flex-row items-center justify-start gap-5">
       <Avatar>
         <AvatarFallback>{isLoggedIn.userLogo}</AvatarFallback>
-        <AvatarBadge
-          className={`${role === "admin" ? "bg-green-600 dark:bg-green-800" : role === "seeker" ? "bg-blue-600 dark:bg-blue-800" : "bg-red-600 dark:bg-red-800"}`}
-        />
       </Avatar>
       <Link href={`/dashboard/${role}`}>
         <Button className={"text-base font-medium"}>

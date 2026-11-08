@@ -18,6 +18,7 @@ import {
   FileText,
   PlusCircle,
   Bookmark,
+  BangladeshiTaka,
 } from "lucide-react"
 import Link from "next/link"
 
@@ -103,9 +104,9 @@ const menuItemsByRoles = {
       icon: Briefcase,
     },
     {
-      name: "Applications",
-      url: "/dashboard/recruiter/applications",
-      icon: FileText,
+      name: "Subscription & Billing",
+      url: "/dashboard/recruiter/subscription",
+      icon: BangladeshiTaka,
     },
     {
       name: "Settings",
