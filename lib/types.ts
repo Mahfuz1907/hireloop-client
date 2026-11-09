@@ -44,3 +44,46 @@ export interface AddJobTypes {
   recruiterName: string | undefined
   recruiterEmail: string | undefined
 }
+
+export interface AddBookMarkTypes {
+  jobId: string
+  title: string
+  companyName: string
+  category: string
+  jobType: string
+  isRemote: boolean
+  location: string
+  deadline: string
+  minSalary: string
+  maxSalary: string
+  frequency: string
+  status: string
+  responsibilities: string
+  qualifications: string
+  recruiterName: string
+  recruiterEmail: string
+  jobSeekerName: string | undefined
+  jobSeekerEmail: string | undefined
+}
+
+export interface BookMarkTypes {
+  _id: string
+  jobId: string
+  title: string
+  companyName: string
+  category: string
+  jobType: string
+  isRemote: boolean
+  location: string
+  deadline: string
+  minSalary: string
+  maxSalary: string
+  frequency: string
+  status: string
+  responsibilities: string
+  qualifications: string
+  recruiterName: string
+  recruiterEmail: string
+  jobSeekerName: string | undefined
+  jobSeekerEmail: string | undefined
+}

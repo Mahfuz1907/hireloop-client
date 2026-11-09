@@ -14,14 +14,18 @@ import {
 } from "lucide-react"
 import Link from "next/link"
 import ActionButtons from "./ActionButtons"
+import { GetBookMarksBySeeker } from "@/app/lib/actions/application"
+import { GetSessionFromServer } from "@/app/lib/GettingSessions/GetSessionFromServer"
 
 interface DetailsTypes {
   params: Promise<{ id: string }>
 }
 
 const JobDetailsPage = async ({ params }: DetailsTypes) => {
+  const user = await GetSessionFromServer()
   const { id } = await params
   const jobData = await GetJobById(id)
+  const jobDataPerSeeker = await GetBookMarksBySeeker(user?.email as string)
 
   return (
     <div className="min-h-screen bg-[#09090b] px-4 py-8 font-sans text-white md:px-8 lg:px-12">
@@ -93,7 +97,7 @@ const JobDetailsPage = async ({ params }: DetailsTypes) => {
             </div>
 
             {/* Action Buttons (Apply & Bookmark) */}
-            <ActionButtons />
+            <ActionButtons job={jobData} bookmarkPerSeeker={jobDataPerSeeker} />
           </div>
         </div>
 

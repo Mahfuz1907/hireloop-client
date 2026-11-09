@@ -2,6 +2,7 @@ import { AddJobTypes } from "@/lib/types"
 
 const BASE_URL = process.env.NEXT_PUBLIC_API
 
+// ------------------------------------------------------Add Job----------------------------------------------------
 export const AddJob = async (data: AddJobTypes) => {
   const res = await fetch(`${BASE_URL}/add-job`, {
     method: "POST",
@@ -15,12 +16,14 @@ export const AddJob = async (data: AddJobTypes) => {
   return result
 }
 
+// -------------------------------------------------------Get Job----------------------------------------------------------------
 export const GetJob = async () => {
   const res = await fetch(`${BASE_URL}/jobs`)
   const result = res.json()
   return result
 }
 
+// ---------------------------------------------------------Get Job Per Page------------------------------------------------------
 export const GetJobPerPage = async (pageNumber: number, limit: number) => {
   const res = await fetch(
     `${BASE_URL}/jobs/page/?page=${pageNumber}&limit=${limit}`
@@ -28,18 +31,21 @@ export const GetJobPerPage = async (pageNumber: number, limit: number) => {
   return res.json()
 }
 
+// -------------------------------------------------------------Get Job by Id------------------------------------------------------
 export const GetJobById = async (id: string) => {
   const res = await fetch(`${BASE_URL}/jobs/${id}`)
   const result = res.json()
   return result
 }
 
+// --------------------------------------------------------------Get Job by recruiter----------------------------------------------
 export const GetJobByRecruiter = async (email: string) => {
   const res = await fetch(`${BASE_URL}/jobs/recruiter/${email}`)
   const result = res.json()
   return result
 }
 
+// ------------------------------------------------------------Delete Job by id-------------------------------------------------------
 export const DeleteJob = async (id: string) => {
   const res = await fetch(`${BASE_URL}/jobs/delete/${id}`, {
     method: "DELETE",
@@ -48,6 +54,7 @@ export const DeleteJob = async (id: string) => {
   return result
 }
 
+// ----------------------------------------------------------------Edit job by id-------------------------------------------------------
 export const EditJob = async (id: string, data: AddJobTypes) => {
   const res = await fetch(`${BASE_URL}/jobs/edit/${id}`, {
     method: "PUT",

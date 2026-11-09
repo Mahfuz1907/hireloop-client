@@ -1,7 +1,6 @@
 "use client"
 
-import { Button } from "@/components/ui/button"
-import { MapPin, Bookmark, Briefcase, Euro, Building2 } from "lucide-react"
+import { MapPin, Briefcase, Euro, Building2 } from "lucide-react"
 import Link from "next/link"
 import SearchBar from "./SearchBar"
 import FilterSideBar from "./FilterSideBar"
@@ -116,17 +115,6 @@ const Jobs = () => {
                         </span>
                       </div>
                     </div>
-                  </div>
-
-                  {/* Right Action (Bookmark button) */}
-                  <div className="flex items-center justify-end sm:justify-start">
-                    <Button
-                      variant="outline"
-                      size="icon"
-                      className="h-10 w-10 rounded-xl border-gray-800 bg-[#18181b] text-gray-400 hover:bg-gray-900 hover:text-white"
-                    >
-                      <Bookmark className="h-4 w-4" />
-                    </Button>
                   </div>
                 </div>
               </div>
