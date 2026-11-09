@@ -1,33 +1,35 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
-import {
-  MapPin,
-  Bookmark,
-  Briefcase,
-  Euro,
-  ChevronDown,
-  Building2,
-} from "lucide-react"
+import { MapPin, Bookmark, Briefcase, Euro, Building2 } from "lucide-react"
 import Link from "next/link"
 import SearchBar from "./SearchBar"
 import FilterSideBar from "./FilterSideBar"
 import { GetJob, GetJobPerPage } from "../lib/actions/jobs"
 import { Job } from "@/lib/types"
 import PaginationComponent from "./PaginationComponent"
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
+import { useRouter } from "next/navigation"
+import { JobContext } from "@/Context/JobContext"
 
 const Jobs = () => {
+  const router = useRouter()
   const [pageNumber, setPageNumber] = useState(1)
   const [totalPages, setTotalPages] = useState(1)
-  const [limit, setLimit] = useState(5)
+  const [limit] = useState(10)
   const [allJobs, setAllJobs] = useState([])
   const [jobsLength, setJobsLength] = useState(0)
+
+  const handlePageChange = (newPage: number) => {
+    if (newPage < 1 || newPage > totalPages) return
+    setPageNumber(newPage)
+    router.push(`/jobs?page=${newPage}`)
+  }
+
   useEffect(() => {
     const fetchjobs = async () => {
       const jobs = await GetJob()
       const jobsPerPage = await GetJobPerPage(pageNumber, limit)
-      setLimit(jobsPerPage.limit)
       setAllJobs(jobsPerPage.jobs)
       setJobsLength(jobs.length)
       setTotalPages(jobsPerPage.totalPages)
@@ -35,6 +37,19 @@ const Jobs = () => {
 
     fetchjobs()
   }, [pageNumber, limit])
+
+  const { searchQuery, filter } = useContext(JobContext)
+  const filteredJobs = allJobs.filter((job: Job) => {
+    const matchesSearch = searchQuery
+      ? job.title.toLowerCase().includes(searchQuery.toLowerCase())
+      : true
+
+    const matchesFilter =
+      filter.length > 0 ? filter.includes(job.jobType) : true
+
+    return matchesSearch && matchesFilter
+  })
+
   return (
     <div className="min-h-screen space-y-8 bg-[#09090b] px-4 py-8 font-sans text-white md:px-8 lg:px-12">
       {/* ================= 1. Top Search Bar Section ================= */}
@@ -53,19 +68,11 @@ const Jobs = () => {
               Found <span className="text-indigo-400">{jobsLength}</span>{" "}
               Professional Jobs
             </h2>
-
-            <div className="flex items-center gap-2 text-xs text-gray-400">
-              <span>Sort by:</span>
-              <button className="flex items-center gap-1.5 rounded-xl border border-gray-800 bg-[#121216] px-3 py-2 text-gray-200 hover:bg-gray-900">
-                Most Recent{" "}
-                <ChevronDown className="h-3.5 w-3.5 text-gray-500" />
-              </button>
-            </div>
           </div>
 
           {/* Job Cards Stack (No Pagination) */}
           <div className="space-y-4">
-            {allJobs.map((job: Job) => (
+            {filteredJobs.map((job: Job) => (
               <div
                 key={job._id}
                 className="group relative overflow-hidden rounded-2xl border border-gray-800/80 bg-[#121216] p-6 shadow-xl transition hover:border-indigo-500/50 hover:bg-[#15151a]"
@@ -129,8 +136,8 @@ const Jobs = () => {
           {/* pagination */}
           <PaginationComponent
             pageNumber={pageNumber}
-            setPageNumber={setPageNumber}
             totalPages={totalPages}
+            handlePageChange={handlePageChange}
           />
         </div>
       </div>
