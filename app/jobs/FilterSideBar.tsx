@@ -133,7 +133,7 @@ const FilterSideBar = () => {
                         <RadioGroupItem
                           id={id}
                           value={option.value}
-                          className="border-gray-600 data-checked:border-indigo-500 data-checked:bg-indigo-600 group-has-[:focus-visible]/field-label:data-checked:border-indigo-500 dark:data-checked:border-indigo-500 dark:data-checked:bg-indigo-600 [&_[data-slot=radio-group-indicator]_span]:bg-white"
+                          className="border-gray-600 data-checked:border-indigo-500 data-checked:bg-indigo-600 group-has-focus-visible/field-label:data-checked:border-indigo-500 dark:data-checked:border-indigo-500 dark:data-checked:bg-indigo-600 [&_[data-slot=radio-group-indicator]_span]:bg-white"
                         />
                         {option.label}
                       </FieldLabel>

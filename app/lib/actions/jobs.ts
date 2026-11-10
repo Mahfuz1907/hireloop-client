@@ -1,4 +1,4 @@
-import { AddJobTypes, Job } from "@/lib/types"
+import { AddJobTypes } from "@/lib/types"
 
 const BASE_URL = process.env.NEXT_PUBLIC_API
 
@@ -15,13 +15,6 @@ export const AddJob = async (data: AddJobTypes) => {
   const result = await res.json()
   return result
 }
-
-// -------------------------------------------------------Get Jobs----------------------------------------------------------------
-// export const GetJob = async () => {
-//   const res = await fetch(`${BASE_URL}/jobs`)
-//   const result = res.json()
-//   return result
-// }
 
 // -------------------------------------------------------Get Jobs By Query----------------------------------------------------------------
 export const GetJobByQuery = async (query = "") => {

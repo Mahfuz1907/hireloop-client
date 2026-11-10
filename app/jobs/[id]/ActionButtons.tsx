@@ -1,9 +1,13 @@
 "use client"
 
-import { AddBookMark, DeleteBookMark } from "@/app/lib/actions/application"
+import {
+  AddApplication,
+  AddBookMark,
+  DeleteBookMark,
+} from "@/app/lib/actions/application"
 import { GetSessionFromClient } from "@/app/lib/GettingSessions/GetSessionFromClient"
 import { Button } from "@/components/ui/button"
-import { BookMarkTypes, Job } from "@/lib/types"
+import { ApplicationTypes, BookMarkTypes, Job } from "@/lib/types"
 import { AppWindow, Bookmark, CheckCircle2 } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { toast } from "sonner"
@@ -11,16 +15,59 @@ import { toast } from "sonner"
 interface ActionTypes {
   job: Job
   bookmarkPerSeeker: BookMarkTypes[]
+  applicationPerSeeker: ApplicationTypes[]
 }
 
-const ActionButtons = ({ job, bookmarkPerSeeker }: ActionTypes) => {
+const ActionButtons = ({
+  job,
+  bookmarkPerSeeker,
+  applicationPerSeeker,
+}: ActionTypes) => {
   const user = GetSessionFromClient()
   const router = useRouter()
   const isBookMarked = bookmarkPerSeeker.some((book) => book.jobId === job._id)
+  const isApplied = applicationPerSeeker.some((app) => app.jobId === job._id)
 
-  const handleApply = () => {}
+  const handleApply = async () => {
+    if (user?.role !== "seeker") {
+      router.push("/login")
+      return
+    }
 
+    const appliedOne = applicationPerSeeker.find((app) => app.jobId === job._id)
+    if (isApplied) {
+      toast.error(`${appliedOne?.title} is already applied`, {
+        position: "top-center",
+      })
+      return
+    } else {
+      const { _id, ...jobDetails } = job
+      const appliedData = {
+        ...jobDetails,
+        jobId: _id,
+        jobSeekerName: user?.name,
+        jobSeekerEmail: user?.email,
+      }
+
+      const result = await AddApplication(appliedData)
+
+      if (result.ok || result.acknowledged || result.success) {
+        router.refresh()
+        toast.success(`Application to ${appliedData.title} is successfull`, {
+          position: "top-center",
+        })
+      } else {
+        toast.error("Application failed", { position: "top-center" })
+      }
+    }
+  }
+
+  // handle bookmark
   const handleBookmark = async () => {
+    if (user?.role !== "seeker") {
+      router.push("/login")
+      return
+    }
     const bookedOne = bookmarkPerSeeker.find((book) => book.jobId === job._id)
     if (isBookMarked) {
       const result = await DeleteBookMark(bookedOne?._id as string)
@@ -77,15 +124,18 @@ const ActionButtons = ({ job, bookmarkPerSeeker }: ActionTypes) => {
 
       <Button
         onClick={handleApply}
-        // className={`h-11 rounded-xl px-6 text-xs font-medium shadow-lg transition ${
-        //   isApplied
-        //     ? "cursor-default border border-emerald-500/30 bg-emerald-600/20 text-emerald-400"
-        //     : "bg-indigo-600 text-white shadow-indigo-600/20 hover:bg-indigo-500"
-        // }`}
+        className={`h-11 rounded-xl px-6 text-xs font-medium shadow-lg transition ${
+          isApplied
+            ? "cursor-default border border-emerald-500/30 bg-emerald-600/20 text-emerald-400"
+            : "bg-indigo-600 text-white shadow-indigo-600/20 hover:bg-indigo-500"
+        }`}
       >
-        {/* <CheckCircle2 className="mr-1.5 inline h-4 w-4" /> */}
-        <AppWindow className="mr-1.5 inline h-4 w-4" />
-        Apply For This Position
+        {isApplied ? (
+          <CheckCircle2 className="mr-1.5 inline h-4 w-4" />
+        ) : (
+          <AppWindow className="mr-1.5 inline h-4 w-4" />
+        )}
+        {isApplied ? "Applied For This Position" : "Apply For This Position"}
       </Button>
     </div>
   )

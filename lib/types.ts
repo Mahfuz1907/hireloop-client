@@ -87,3 +87,46 @@ export interface BookMarkTypes {
   jobSeekerName: string | undefined
   jobSeekerEmail: string | undefined
 }
+
+export interface AddApplicationTypes {
+  jobId: string
+  title: string
+  companyName: string
+  category: string
+  jobType: string
+  isRemote: boolean
+  location: string
+  deadline: string
+  minSalary: string
+  maxSalary: string
+  frequency: string
+  status: string
+  responsibilities: string
+  qualifications: string
+  recruiterName: string
+  recruiterEmail: string
+  jobSeekerName: string | undefined
+  jobSeekerEmail: string | undefined
+}
+
+export interface ApplicationTypes {
+  _id: string
+  jobId: string
+  title: string
+  companyName: string
+  category: string
+  jobType: string
+  isRemote: boolean
+  location: string
+  deadline: string
+  minSalary: string
+  maxSalary: string
+  frequency: string
+  status: string
+  responsibilities: string
+  qualifications: string
+  recruiterName: string
+  recruiterEmail: string
+  jobSeekerName: string | undefined
+  jobSeekerEmail: string | undefined
+}
