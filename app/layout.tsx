@@ -6,7 +6,6 @@ import { cn } from "@/lib/utils"
 import { Metadata } from "next"
 import NavFootWrapper from "@/components/NavFootWrapper"
 import { Toaster } from "@/components/ui/sonner"
-import JobProvider from "@/Context/JobContext"
 
 const geist = Geist({ subsets: ["latin"], variable: "--font-sans" })
 
@@ -40,13 +39,11 @@ export default function RootLayout({
     >
       <body>
         <ThemeProvider>
-          <JobProvider>
-            <NavFootWrapper>
-              {/* main components */}
-              <div className="grow">{children}</div>
-            </NavFootWrapper>
-            <Toaster />
-          </JobProvider>
+          <NavFootWrapper>
+            {/* main components */}
+            <div className="grow">{children}</div>
+          </NavFootWrapper>
+          <Toaster />
         </ThemeProvider>
       </body>
     </html>

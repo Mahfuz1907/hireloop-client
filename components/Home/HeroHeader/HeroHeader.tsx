@@ -1,108 +1,109 @@
-"use client";
+"use client"
 
-import React, { useState } from "react";
-import { useRouter } from "next/navigation";
-import { Search, MapPin, Briefcase } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import React, { useState } from "react"
+import { useRouter } from "next/navigation"
+import { Search, MapPin, Briefcase } from "lucide-react"
+import { Button } from "@/components/ui/button"
 
 export default function HeroHeader() {
-  const router = useRouter();
-  const [keyword, setKeyword] = useState("");
-  const [location, setLocation] = useState("");
+  const router = useRouter()
+  const [keyword, setKeyword] = useState("")
+  const [location, setLocation] = useState("")
 
   const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-    const params = new URLSearchParams();
-    if (keyword.trim()) params.append("keyword", keyword.trim());
-    if (location.trim()) params.append("location", location.trim());
-    
+    e.preventDefault()
+    const params = new URLSearchParams()
+    if (keyword.trim()) params.append("search", keyword.trim())
+    if (location.trim()) params.append("location", location.trim())
+
     // Redirects to the Browse Jobs page with query params
-    router.push(`/jobs?${params.toString()}`);
-  };
+    router.push(`/jobs?${params.toString()}`)
+  }
 
   const handleTrendingClick = (tag: string) => {
-    router.push(`/jobs?keyword=${encodeURIComponent(tag)}`);
-  };
+    router.push(`/jobs?search=${encodeURIComponent(tag)}`)
+  }
 
-  const trendingTags = ["Product Designer", "AI Engineering", "Dev-ops Engineer"];
+  const trendingTags = [
+    "Product Designer",
+    "AI Engineering",
+    "Dev-ops Engineer",
+  ]
 
   return (
-    <div className="relative w-full bg-[#0a0a0c] text-white pt-12 pb-8 px-4 sm:px-6 flex flex-col items-center text-center overflow-hidden">
-      
+    <div className="relative flex w-full flex-col items-center overflow-hidden bg-[#0a0a0c] px-4 pt-12 pb-8 text-center text-white sm:px-6">
       {/* Top Badge */}
-      <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-zinc-900 border border-zinc-800 text-xs sm:text-sm text-zinc-300 shadow-inner mb-6">
-        <Briefcase className="w-4 h-4 text-orange-500" />
+      <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-zinc-800 bg-zinc-900 px-4 py-1.5 text-xs text-zinc-300 shadow-inner sm:text-sm">
+        <Briefcase className="h-4 w-4 text-orange-500" />
         <span>50,000+ NEW JOBS THIS MONTH</span>
       </div>
 
       {/* Headline */}
-      <h1 className="text-3xl sm:text-5xl md:text-6xl font-extrabold tracking-tight max-w-4xl mb-4 text-white">
+      <h1 className="mb-4 max-w-4xl text-3xl font-extrabold tracking-tight text-white sm:text-5xl md:text-6xl">
         Find Your Dream Job Today
       </h1>
 
       {/* Subheadline */}
-      <p className="text-zinc-400 text-sm sm:text-base md:text-lg max-w-2xl mb-8">
-        HireLoop connects top talent with world-class companies. Browse thousands of curated opportunities and land your next role — faster.
+      <p className="mb-8 max-w-2xl text-sm text-zinc-400 sm:text-base md:text-lg">
+        HireLoop connects top talent with world-class companies. Browse
+        thousands of curated opportunities and land your next role — faster.
       </p>
 
       {/* Search Form */}
-      <form 
+      <form
         onSubmit={handleSearch}
-        className="w-full max-w-3xl bg-[#141417] border border-zinc-800 rounded-2xl p-2 sm:p-2.5 flex flex-col sm:flex-row items-center gap-2 shadow-2xl"
+        className="flex w-full max-w-3xl flex-col items-center gap-2 rounded-2xl border border-zinc-800 bg-[#141417] p-2 shadow-2xl sm:flex-row sm:p-2.5"
       >
-        
         {/* Job Title / Keyword Input */}
-        <div className="flex items-center gap-3 w-full sm:w-1/2 px-3 py-2 bg-transparent text-zinc-200">
-          <Search className="w-5 h-5 text-zinc-500 shrink-0" />
-          <input 
-            type="text" 
+        <div className="flex w-full items-center gap-3 bg-transparent px-3 py-2 text-zinc-200 sm:w-1/2">
+          <Search className="h-5 w-5 shrink-0 text-zinc-500" />
+          <input
+            type="text"
             value={keyword}
             onChange={(e) => setKeyword(e.target.value)}
-            placeholder="Job title, skill or company" 
-            className="w-full bg-transparent border-none outline-none text-sm placeholder:text-zinc-500 text-white"
+            placeholder="Job title, skill or company"
+            className="w-full border-none bg-transparent text-sm text-white outline-none placeholder:text-zinc-500"
           />
         </div>
 
-        <div className="hidden sm:block h-6 w-px bg-zinc-800" />
+        <div className="hidden h-6 w-px bg-zinc-800 sm:block" />
 
         {/* Location Input */}
-        <div className="flex items-center gap-3 w-full sm:w-1/2 px-3 py-2 bg-transparent text-zinc-200">
-          <MapPin className="w-5 h-5 text-zinc-500 shrink-0" />
-          <input 
-            type="text" 
+        <div className="flex w-full items-center gap-3 bg-transparent px-3 py-2 text-zinc-200 sm:w-1/2">
+          <MapPin className="h-5 w-5 shrink-0 text-zinc-500" />
+          <input
+            type="text"
             value={location}
             onChange={(e) => setLocation(e.target.value)}
-            placeholder="Location or Remote" 
-            className="w-full bg-transparent border-none outline-none text-sm placeholder:text-zinc-500 text-white"
+            placeholder="Location or Remote"
+            className="w-full border-none bg-transparent text-sm text-white outline-none placeholder:text-zinc-500"
           />
         </div>
 
         {/* Search Button */}
-        <Button 
+        <Button
           type="submit"
-          className="w-full sm:w-auto bg-indigo-600 hover:bg-indigo-500 text-white px-6 py-3 rounded-xl font-medium transition-all shadow-lg shadow-indigo-600/20"
+          className="w-full rounded-xl bg-indigo-600 px-6 py-3 font-medium text-white shadow-lg shadow-indigo-600/20 transition-all hover:bg-indigo-500 sm:w-auto"
         >
-          <Search className="w-4 h-4 sm:hidden mr-2" />
+          <Search className="mr-2 h-4 w-4 sm:hidden" />
           Search Jobs
         </Button>
-
       </form>
 
       {/* Trending Positions */}
-      <div className="flex flex-wrap items-center justify-center gap-2 mt-6 text-xs sm:text-sm text-zinc-400">
-        <span className="text-zinc-500 font-medium">Trending Position:</span>
+      <div className="mt-6 flex flex-wrap items-center justify-center gap-2 text-xs text-zinc-400 sm:text-sm">
+        <span className="font-medium text-zinc-500">Trending Position:</span>
         {trendingTags.map((tag) => (
-          <button 
+          <button
             type="button"
             key={tag}
             onClick={() => handleTrendingClick(tag)}
-            className="px-3 py-1 rounded-full bg-[#18181b] border border-zinc-800 text-zinc-300 hover:border-zinc-700 transition-all cursor-pointer"
+            className="cursor-pointer rounded-full border border-zinc-800 bg-[#18181b] px-3 py-1 text-zinc-300 transition-all hover:border-zinc-700"
           >
             {tag}
           </button>
         ))}
       </div>
-
     </div>
-  );
+  )
 }
