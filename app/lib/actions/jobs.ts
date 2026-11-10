@@ -23,6 +23,13 @@ export const GetJobByQuery = async (query = "") => {
   return result
 }
 
+// -----------------------------------------------------Get all jobs----------------------------------------------------------
+export const GetAllJobs = async () => {
+  const res = await fetch(`${BASE_URL}/all-jobs`)
+  const result = await res.json()
+  return result
+}
+
 // -------------------------------------------------------------Get Job by Id------------------------------------------------------
 export const GetJobById = async (id: string) => {
   const res = await fetch(`${BASE_URL}/jobs/${id}`)

@@ -1,6 +1,3 @@
-"use client"
-
-import { useEffect, useState } from "react"
 import {
   Search,
   Bell,
@@ -13,60 +10,39 @@ import {
   CreditCard,
   ArrowUpRight,
   Inbox,
-  Loader2,
+  ArrowUp,
+  ArrowDown,
 } from "lucide-react"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
+import { GetUsers, GetUsersByRole } from "@/app/lib/actions/users"
+import { GetAllJobs } from "@/app/lib/actions/jobs"
+import { Transaction } from "@/lib/types"
 
-interface Transaction {
-  _id: string
-  user: {
-    name: string
-    email: string
-    company?: string
-    avatar?: string
-  }
-  planType: string
-  transactionId: string
-  amount: number
-  date: string
-  status: "Success" | "Pending" | "Failed"
-}
+const AdminDashboardPage = async () => {
+  // users calculation
+  const previousUsers = 1
+  const users = await GetUsers()
+  const userPercent = ((users.length - previousUsers) * 100) / previousUsers
 
-interface Stats {
-  totalUsers: number
-  totalRecruiters: number
-  totalCompanies: number
-  jobsPosted: number
-  platformRevenue: number
-}
+  // recruiters calculation
+  const previousRecruiters = 1
+  const recruiters = await GetUsersByRole("recruiter")
+  const recruitersPercent =
+    ((recruiters.length - previousRecruiters) * 100) / previousRecruiters
 
-const AdminDashboardPage = () => {
-  const [stats, setStats] = useState<Stats | null>(null)
-  const [transactions, setTransactions] = useState<Transaction[]>([])
-  const [loading, setLoading] = useState<boolean>(true)
+  // jobs calculation
+  const previousJobs = 5
+  const jobs = await GetAllJobs()
+  const jobsPercent = ((jobs.length - previousJobs) * 100) / previousJobs
 
-  useEffect(() => {
-    async function fetchDashboardData() {
-      try {
-        const res = await fetch("/api/admin/dashboard-stats") // Apnar backend endpoint
-        const data = await res.json()
-
-        if (data.success) {
-          setStats(data.stats)
-          setTransactions(data.transactions || [])
-        }
-      } catch (err) {
-        console.error("Failed to load dashboard stats", err)
-      } finally {
-        setLoading(false)
-      }
-    }
-
-    fetchDashboardData()
-  }, [])
+  // transaction calculation
+  const previousTransaction = 0
+  const transactions: Transaction[] = []
+  const transactionPercent =
+    ((transactions.length - previousTransaction) * 100) / previousTransaction
   return (
     <div className="min-h-screen space-y-8 bg-[#09090b] p-4 font-sans text-white md:p-8">
       {/* Top Search & Actions Bar */}
@@ -121,13 +97,22 @@ const AdminDashboardPage = () => {
             <div className="rounded-lg border border-gray-800 bg-gray-900 p-2">
               <Users className="h-4 w-4 text-gray-400" />
             </div>
-            <span className="flex items-center text-xs font-semibold text-emerald-400">
-              ↑12%
+            <span
+              className={`flex items-center text-xs font-semibold ${userPercent > 0 ? "text-emerald-400" : userPercent < 0 ? "text-red-400" : "text-white"}`}
+            >
+              {userPercent > 0 ? (
+                <ArrowUp />
+              ) : userPercent < 0 ? (
+                <ArrowDown />
+              ) : (
+                ""
+              )}
+              {userPercent}%
             </span>
           </CardHeader>
           <CardContent>
             <p className="text-xs font-medium text-gray-400">Total Users</p>
-            <h3 className="mt-1 text-2xl font-bold">124,892</h3>
+            <h3 className="mt-1 text-2xl font-bold">{users.length}</h3>
           </CardContent>
         </Card>
 
@@ -137,15 +122,24 @@ const AdminDashboardPage = () => {
             <div className="rounded-lg border border-gray-800 bg-gray-900 p-2">
               <Briefcase className="h-4 w-4 text-gray-400" />
             </div>
-            <span className="flex items-center text-xs font-semibold text-emerald-400">
-              ↑8%
+            <span
+              className={`flex items-center text-xs font-semibold ${recruitersPercent > 0 ? "text-emerald-400" : recruitersPercent < 0 ? "text-red-400" : "text-white"}`}
+            >
+              {recruitersPercent > 0 ? (
+                <ArrowUp />
+              ) : recruitersPercent < 0 ? (
+                <ArrowDown />
+              ) : (
+                ""
+              )}
+              {recruitersPercent}%
             </span>
           </CardHeader>
           <CardContent>
             <p className="text-xs font-medium text-gray-400">
               Total Recruiters
             </p>
-            <h3 className="mt-1 text-2xl font-bold">12,405</h3>
+            <h3 className="mt-1 text-2xl font-bold">{recruiters.length}</h3>
           </CardContent>
         </Card>
 
@@ -155,13 +149,22 @@ const AdminDashboardPage = () => {
             <div className="rounded-lg border border-gray-800 bg-gray-900 p-2">
               <Building2 className="h-4 w-4 text-gray-400" />
             </div>
-            <span className="flex items-center text-xs font-semibold text-gray-400">
-              −0%
+            <span
+              className={`flex items-center text-xs font-semibold ${recruitersPercent > 0 ? "text-emerald-400" : recruitersPercent < 0 ? "text-red-400" : "text-white"}`}
+            >
+              {recruitersPercent > 0 ? (
+                <ArrowUp />
+              ) : recruitersPercent < 0 ? (
+                <ArrowDown />
+              ) : (
+                ""
+              )}
+              {recruitersPercent}%
             </span>
           </CardHeader>
           <CardContent>
             <p className="text-xs font-medium text-gray-400">Total Companies</p>
-            <h3 className="mt-1 text-2xl font-bold">4,281</h3>
+            <h3 className="mt-1 text-2xl font-bold">{recruiters.length}</h3>
           </CardContent>
         </Card>
 
@@ -171,13 +174,22 @@ const AdminDashboardPage = () => {
             <div className="rounded-lg border border-gray-800 bg-gray-900 p-2">
               <Briefcase className="h-4 w-4 text-gray-400" />
             </div>
-            <span className="flex items-center text-xs font-semibold text-emerald-400">
-              ↑24%
+            <span
+              className={`flex items-center text-xs font-semibold ${jobsPercent > 0 ? "text-emerald-400" : jobsPercent < 0 ? "text-red-400" : "text-white"}`}
+            >
+              {jobsPercent > 0 ? (
+                <ArrowUp />
+              ) : jobsPercent < 0 ? (
+                <ArrowDown />
+              ) : (
+                ""
+              )}
+              {jobsPercent}%
             </span>
           </CardHeader>
           <CardContent>
             <p className="text-xs font-medium text-gray-400">Jobs Posted</p>
-            <h3 className="mt-1 text-2xl font-bold">8,920</h3>
+            <h3 className="mt-1 text-2xl font-bold">{jobs.length}</h3>
           </CardContent>
         </Card>
 
@@ -187,15 +199,24 @@ const AdminDashboardPage = () => {
             <div className="rounded-lg border border-gray-800 bg-gray-900 p-2">
               <CreditCard className="h-4 w-4 text-gray-400" />
             </div>
-            <span className="flex items-center text-xs font-semibold text-emerald-400">
-              ↑18.5%
+            <span
+              className={`flex items-center text-xs font-semibold ${transactionPercent > 0 ? "text-emerald-400" : transactionPercent < 0 ? "text-red-400" : "text-white"}`}
+            >
+              {transactionPercent > 0 ? (
+                <ArrowUp />
+              ) : transactionPercent < 0 ? (
+                <ArrowDown />
+              ) : (
+                ""
+              )}
+              {transactionPercent}%
             </span>
           </CardHeader>
           <CardContent>
             <p className="text-xs font-medium text-gray-400">
               Platform Revenue
             </p>
-            <h3 className="mt-1 text-2xl font-bold">$245,800</h3>
+            <h3 className="mt-1 text-2xl font-bold">$00000</h3>
           </CardContent>
         </Card>
       </div>
@@ -214,11 +235,7 @@ const AdminDashboardPage = () => {
           </a>
         </div>
 
-        {loading ? (
-          <div className="flex items-center justify-center py-16">
-            <Loader2 className="h-7 w-7 animate-spin text-blue-500" />
-          </div>
-        ) : transactions.length === 0 ? (
+        {transactions.length === 0 ? (
           /* 🔴 Empty State Design (Jokhon kono transaction database-e thakbe na) */
           <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-gray-800 bg-[#18181b]/40 py-16 text-center">
             <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-full border border-gray-800 bg-gray-900 text-gray-500">

@@ -130,3 +130,18 @@ export interface ApplicationTypes {
   jobSeekerName: string | undefined
   jobSeekerEmail: string | undefined
 }
+
+export interface Transaction {
+  _id: string
+  user: {
+    name: string
+    email: string
+    company?: string
+    avatar?: string
+  }
+  planType: string
+  transactionId: string
+  amount: number
+  date: string
+  status: "Success" | "Pending" | "Failed"
+}
