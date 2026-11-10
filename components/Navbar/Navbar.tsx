@@ -14,6 +14,7 @@ import Image from "next/image"
 import { signOut, useSession } from "@/app/lib/auth-client"
 import { Avatar, AvatarFallback } from "../ui/avatar"
 import { Spinner } from "../ui/spinner"
+import { ThemeSwitcher } from "@/components/ThemeSwitcher"
 import { toast } from "sonner"
 import { useRouter } from "next/navigation"
 
@@ -108,6 +109,7 @@ export default function Navbar() {
             width={120}
             height={36}
             priority
+            className="logo-img"
           />
         </Link>
 
@@ -127,6 +129,8 @@ export default function Navbar() {
 
           <div className="h-4 w-px bg-zinc-700" />
 
+          <ThemeSwitcher className="text-zinc-300 hover:text-white" />
+
           <div className="flex items-center gap-4">
             {isLoggedIn.user ? (
               <>
@@ -145,7 +149,8 @@ export default function Navbar() {
         </div>
 
         {/* Mobile Navigation (Hamburger Menu) */}
-        <div className="flex md:hidden">
+        <div className="flex items-center gap-2 md:hidden">
+          <ThemeSwitcher className="text-zinc-300 hover:text-white" />
           <Sheet open={isOpen} onOpenChange={setIsOpen}>
             <SheetTrigger>
               <Button
@@ -169,6 +174,7 @@ export default function Navbar() {
                   width={120}
                   height={36}
                   priority
+                  className="logo-img"
                 />
               </SheetHeader>
 

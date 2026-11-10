@@ -57,7 +57,7 @@ const SearchBar = () => {
 
         <Button
           type="submit"
-          className="h-12 rounded-xl bg-indigo-600 px-8 text-xs font-medium text-white shadow-lg shadow-indigo-600/20 hover:bg-indigo-500"
+          className="h-12 rounded-xl bg-indigo-600 px-8 text-xs font-medium text-[#fff] shadow-lg shadow-indigo-600/20 hover:bg-indigo-500"
         >
           Search Jobs
         </Button>

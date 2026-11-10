@@ -401,7 +401,7 @@ const EditForm = ({ job }: { job: Job }) => {
               <Button
                 type="submit"
 
-                className="cursor-pointer rounded-xl bg-indigo-600 px-6 py-2.5 text-xs font-medium text-white shadow-lg shadow-indigo-600/20 hover:bg-indigo-500"
+                className="cursor-pointer rounded-xl bg-indigo-600 px-6 py-2.5 text-xs font-medium text-[#fff] shadow-lg shadow-indigo-600/20 hover:bg-indigo-500"
               >
                 Update Job Listing
               </Button>

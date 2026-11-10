@@ -83,7 +83,7 @@ export default function HeroHeader() {
         {/* Search Button */}
         <Button
           type="submit"
-          className="w-full rounded-xl bg-indigo-600 px-6 py-3 font-medium text-white shadow-lg shadow-indigo-600/20 transition-all hover:bg-indigo-500 sm:w-auto"
+          className="w-full rounded-xl bg-indigo-600 px-6 py-3 font-medium text-[#fff] shadow-lg shadow-indigo-600/20 transition-all hover:bg-indigo-500 sm:w-auto"
         >
           <Search className="mr-2 h-4 w-4 sm:hidden" />
           Search Jobs

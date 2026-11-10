@@ -3,6 +3,11 @@
 import * as React from "react"
 import { ThemeProvider as NextThemesProvider, useTheme } from "next-themes"
 
+// The app's four themes. "light" and "dark" are the neutral shadcn palettes;
+// "green" and "blue" are tinted dark palettes (see app/globals.css).
+export const THEMES = ["light", "dark", "green", "blue"] as const
+export type AppTheme = (typeof THEMES)[number]
+
 function ThemeProvider({
   children,
   ...props
@@ -10,11 +15,12 @@ function ThemeProvider({
   return (
     <NextThemesProvider
       attribute="class"
+      themes={[...THEMES]}
       defaultTheme="system"
       enableSystem
       disableTransitionOnChange
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      scriptProps={{ type: "application/json" } as any}
+      // color-scheme is set per theme in globals.css (.dark/.green/.blue)
+      enableColorScheme={false}
       {...props}
     >
       <ThemeHotkey />
@@ -57,7 +63,11 @@ function ThemeHotkey() {
         return
       }
 
-      setTheme(resolvedTheme === "dark" ? "light" : "dark")
+      const current = THEMES.includes(resolvedTheme as AppTheme)
+        ? (resolvedTheme as AppTheme)
+        : "dark"
+      const next = THEMES[(THEMES.indexOf(current) + 1) % THEMES.length]
+      setTheme(next)
     }
 
     window.addEventListener("keydown", onKeyDown)

@@ -36,7 +36,7 @@ const CancelDialogue = ({ appliedJob }: { appliedJob: ApplicationTypes }) => {
   }
   return (
     <AlertDialog>
-      <AlertDialogTrigger className="inline-flex cursor-pointer items-center gap-1 rounded-lg border border-gray-800 bg-red-700 px-3 py-1.5 text-xs font-medium text-gray-400 transition hover:border-gray-700 hover:text-white">
+      <AlertDialogTrigger className="inline-flex cursor-pointer items-center gap-1 rounded-lg border border-gray-800 bg-red-700 px-3 py-1.5 text-xs font-medium text-gray-400 transition hover:border-gray-700 hover:text-[#fff]">
         <X className="h-5 w-5" strokeWidth={3} />
       </AlertDialogTrigger>
 
@@ -65,7 +65,7 @@ const CancelDialogue = ({ appliedJob }: { appliedJob: ApplicationTypes }) => {
 
           <AlertDialogCancel
             onClick={handleCancel}
-            className="m-0 rounded-xl bg-red-600 px-4 py-2.5 text-xs font-semibold text-white shadow-lg transition hover:bg-red-700"
+            className="m-0 rounded-xl bg-red-600 px-4 py-2.5 text-xs font-semibold text-[#fff] shadow-lg transition hover:bg-red-700"
           >
             Yes, Cancel Application
           </AlertDialogCancel>

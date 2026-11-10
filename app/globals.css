@@ -2,7 +2,7 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
-@custom-variant dark (&:is(.dark *));
+@custom-variant dark (&:is(.dark *, .green *, .blue *));
 
 @theme inline {
     --font-heading: var(--font-sans);
@@ -83,6 +83,7 @@
 }
 
 .dark {
+    color-scheme: dark;
     --background: oklch(0.145 0 0);
     --foreground: oklch(0.985 0 0);
     --card: oklch(0.205 0 0);
@@ -114,6 +115,198 @@
     --sidebar-accent-foreground: oklch(0.985 0 0);
     --sidebar-border: oklch(1 0 0 / 10%);
     --sidebar-ring: oklch(0.556 0 0);
+}
+
+/* ============================================================================
+   Theme system: light | dark | green | blue
+   next-themes puts the active theme on <html> as a class ("light", "dark",
+   "green", "blue"). Dark keeps the legacy hardcoded palette below untouched.
+
+   The app's custom pages are styled with Tailwind palette utilities
+   (text-zinc-*, border-gray-*, text-white, ...) and arbitrary hex classes
+   (bg-[#09090b], bg-[#121216], ...). Those utilities compile to
+   var(--color-*) / literal colors, so the themes below re-map them:
+
+   1. .light inverts the neutral palette (white -> ink, dark grays -> light
+      grays) so legacy "dark-only" pages render correctly on light surfaces.
+   2. .green / .blue tint the shadcn tokens and re-map the indigo/blue accent
+      scales (green swaps them to emerald) plus the dark neutral shades.
+   3. The [class~="..."] rules below map the arbitrary hex surfaces onto the
+      theme tokens for every theme except dark.
+   Keep new code on the semantic tokens (bg-background, bg-card, text-foreground,
+   border-border, text-primary, ...) instead of raw palette/hex values.
+   ========================================================================= */
+
+:is(.light, .green, .blue) [class~="bg-[#09090b]"],
+:is(.light, .green, .blue) [class~="bg-[#0a0a0c]"] {
+    background-color: var(--background);
+}
+
+:is(.light, .green, .blue) [class~="bg-[#121216]"],
+:is(.light, .green, .blue) [class~="bg-[#121214]"],
+:is(.light, .green, .blue) [class~="bg-[#141417]"] {
+    background-color: var(--card);
+}
+
+:is(.light, .green, .blue) [class~="bg-[#121216]/50"] {
+    background-color: color-mix(in oklab, var(--card) 50%, transparent);
+}
+
+:is(.light, .green, .blue) [class~="bg-[#121216]/90"] {
+    background-color: color-mix(in oklab, var(--card) 90%, transparent);
+}
+
+:is(.light, .green, .blue) [class~="bg-[#18181b]"],
+:is(.light, .green, .blue) [class~="bg-[#18181c]"] {
+    background-color: var(--input);
+}
+
+:is(.light, .green, .blue) [class~="bg-[#18181b]/40"] {
+    background-color: color-mix(in oklab, var(--input) 40%, transparent);
+}
+
+:is(.light, .green, .blue) [class~="bg-[#18181b]/50"] {
+    background-color: color-mix(in oklab, var(--input) 50%, transparent);
+}
+
+:is(.light, .green, .blue) [class~="bg-[#18181b]/60"] {
+    background-color: color-mix(in oklab, var(--input) 60%, transparent);
+}
+
+:is(.light, .green, .blue) [class~="bg-[#1a1a22]"] {
+    background-color: var(--secondary);
+}
+
+:is(.light, .green, .blue) [class~="hover:bg-[#15151a]"]:hover,
+:is(.light, .green, .blue) [class~="hover:bg-[#18181b]"]:hover,
+:is(.light, .green, .blue) [class~="hover:bg-[#1a1a22]"]:hover {
+    background-color: var(--accent);
+}
+
+:is(.light, .green, .blue) [class~="hover:bg-[#1a1a22]/50"]:hover {
+    background-color: color-mix(in oklab, var(--accent) 50%, transparent);
+}
+
+/* The logo image is drawn for dark backgrounds; flip it in light mode. */
+.light .logo-img {
+    filter: invert(1) hue-rotate(180deg);
+}
+
+.light {
+    color-scheme: light;
+    /* Invert the neutral Tailwind palette so the legacy dark-styled pages
+       render correctly on the light shadcn tokens. */
+    --color-white: oklch(0.145 0 0);
+    --color-black: oklch(0.985 0 0);
+    --color-zinc-200: oklch(0.25 0 0);
+    --color-zinc-300: oklch(0.37 0 0);
+    --color-zinc-400: oklch(0.45 0 0);
+    --color-zinc-500: oklch(0.55 0 0);
+    --color-zinc-600: oklch(0.58 0 0);
+    --color-zinc-700: oklch(0.78 0 0);
+    --color-zinc-800: oklch(0.87 0 0);
+    --color-zinc-900: oklch(0.93 0 0);
+    --color-gray-200: oklch(0.25 0 0);
+    --color-gray-300: oklch(0.37 0 0);
+    --color-gray-400: oklch(0.45 0 0);
+    --color-gray-500: oklch(0.55 0 0);
+    --color-gray-600: oklch(0.58 0 0);
+    --color-gray-700: oklch(0.78 0 0);
+    --color-gray-800: oklch(0.87 0 0);
+    --color-gray-900: oklch(0.93 0 0);
+}
+
+.green {
+    color-scheme: dark;
+    --background: oklch(0.155 0.02 160);
+    --foreground: oklch(0.97 0.01 155);
+    --card: oklch(0.205 0.024 160);
+    --card-foreground: oklch(0.97 0.01 155);
+    --popover: oklch(0.205 0.024 160);
+    --popover-foreground: oklch(0.97 0.01 155);
+    --primary: oklch(0.7 0.16 162);
+    --primary-foreground: oklch(0.13 0.05 162);
+    --secondary: oklch(0.26 0.03 160);
+    --secondary-foreground: oklch(0.97 0.01 155);
+    --muted: oklch(0.26 0.03 160);
+    --muted-foreground: oklch(0.72 0.02 155);
+    --accent: oklch(0.3 0.045 160);
+    --accent-foreground: oklch(0.97 0.01 155);
+    --destructive: oklch(0.704 0.191 22.216);
+    --border: oklch(0.7 0.08 160 / 35%);
+    --input: oklch(0.7 0.08 160 / 22%);
+    --ring: oklch(0.7 0.16 162);
+    --chart-1: oklch(0.809 0.104 163.351);
+    --chart-2: oklch(0.765 0.177 163.223);
+    --chart-3: oklch(0.696 0.17 162.48);
+    --chart-4: oklch(0.596 0.145 163.225);
+    --chart-5: oklch(0.508 0.118 165.612);
+    --sidebar: oklch(0.185 0.022 160);
+    --sidebar-foreground: oklch(0.97 0.01 155);
+    --sidebar-primary: oklch(0.7 0.16 162);
+    --sidebar-primary-foreground: oklch(0.13 0.05 162);
+    --sidebar-accent: oklch(0.26 0.03 160);
+    --sidebar-accent-foreground: oklch(0.97 0.01 155);
+    --sidebar-border: oklch(0.7 0.08 160 / 35%);
+    --sidebar-ring: oklch(0.7 0.16 162);
+    /* Swap the indigo/blue accent scales for emerald. */
+    --color-indigo-300: oklch(0.809 0.104 163.351);
+    --color-indigo-400: oklch(0.765 0.177 163.223);
+    --color-indigo-500: oklch(0.696 0.17 162.48);
+    --color-indigo-600: oklch(0.596 0.145 163.225);
+    --color-blue-400: oklch(0.765 0.177 163.223);
+    --color-blue-500: oklch(0.696 0.17 162.48);
+    --color-blue-600: oklch(0.596 0.145 163.225);
+    --color-blue-700: oklch(0.508 0.118 165.612);
+    /* Tint the dark neutral borders/surfaces. */
+    --color-zinc-700: oklch(0.32 0.025 160);
+    --color-zinc-800: oklch(0.35 0.03 160);
+    --color-zinc-900: oklch(0.4 0.035 160);
+    --color-gray-700: oklch(0.32 0.025 160);
+    --color-gray-800: oklch(0.35 0.03 160);
+    --color-gray-900: oklch(0.4 0.035 160);
+}
+
+.blue {
+    color-scheme: dark;
+    --background: oklch(0.17 0.03 262);
+    --foreground: oklch(0.97 0.01 262);
+    --card: oklch(0.215 0.04 262);
+    --card-foreground: oklch(0.97 0.01 262);
+    --popover: oklch(0.215 0.04 262);
+    --popover-foreground: oklch(0.97 0.01 262);
+    --primary: oklch(0.62 0.19 265);
+    --primary-foreground: oklch(0.13 0.04 265);
+    --secondary: oklch(0.27 0.04 262);
+    --secondary-foreground: oklch(0.97 0.01 262);
+    --muted: oklch(0.27 0.04 262);
+    --muted-foreground: oklch(0.72 0.03 262);
+    --accent: oklch(0.31 0.055 262);
+    --accent-foreground: oklch(0.97 0.01 262);
+    --destructive: oklch(0.704 0.191 22.216);
+    --border: oklch(0.7 0.08 262 / 35%);
+    --input: oklch(0.7 0.08 262 / 22%);
+    --ring: oklch(0.62 0.19 265);
+    --chart-1: oklch(0.809 0.105 251.813);
+    --chart-2: oklch(0.707 0.165 254.624);
+    --chart-3: oklch(0.623 0.214 259.815);
+    --chart-4: oklch(0.546 0.245 262.881);
+    --chart-5: oklch(0.488 0.243 264.376);
+    --sidebar: oklch(0.2 0.035 262);
+    --sidebar-foreground: oklch(0.97 0.01 262);
+    --sidebar-primary: oklch(0.62 0.19 265);
+    --sidebar-primary-foreground: oklch(0.13 0.04 265);
+    --sidebar-accent: oklch(0.27 0.04 262);
+    --sidebar-accent-foreground: oklch(0.97 0.01 262);
+    --sidebar-border: oklch(0.7 0.08 262 / 35%);
+    --sidebar-ring: oklch(0.62 0.19 265);
+    /* Tint the dark neutral borders/surfaces. */
+    --color-zinc-700: oklch(0.32 0.03 262);
+    --color-zinc-800: oklch(0.35 0.035 262);
+    --color-zinc-900: oklch(0.4 0.04 262);
+    --color-gray-700: oklch(0.32 0.03 262);
+    --color-gray-800: oklch(0.35 0.035 262);
+    --color-gray-900: oklch(0.4 0.04 262);
 }
 
 @layer base {

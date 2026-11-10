@@ -93,7 +93,7 @@ export default function SignUpPage() {
                 onClick={() => setRole("seeker")}
                 className={`flex items-center justify-center gap-2 rounded-lg py-2.5 text-xs font-medium transition-all sm:text-sm ${
                   role === "seeker"
-                    ? "bg-indigo-600 text-white shadow-md shadow-indigo-600/30"
+                    ? "bg-indigo-600 text-[#fff] shadow-md shadow-indigo-600/30"
                     : "text-zinc-400 hover:text-white"
                 }`}
               >
@@ -106,7 +106,7 @@ export default function SignUpPage() {
                 onClick={() => setRole("recruiter")}
                 className={`flex items-center justify-center gap-2 rounded-lg py-2.5 text-xs font-medium transition-all sm:text-sm ${
                   role === "recruiter"
-                    ? "bg-indigo-600 text-white shadow-md shadow-indigo-600/30"
+                    ? "bg-indigo-600 text-[#fff] shadow-md shadow-indigo-600/30"
                     : "text-zinc-400 hover:text-white"
                 }`}
               >
@@ -176,7 +176,7 @@ export default function SignUpPage() {
               {/* Submit Button */}
               <Button
                 type="submit"
-                className="mt-2 flex w-full items-center justify-center gap-2 rounded-xl bg-indigo-600 py-6 font-medium text-white shadow-lg shadow-indigo-600/20 transition-all hover:bg-indigo-500"
+                className="mt-2 flex w-full items-center justify-center gap-2 rounded-xl bg-indigo-600 py-6 font-medium text-[#fff] shadow-lg shadow-indigo-600/20 transition-all hover:bg-indigo-500"
               >
                 Create {role === "seeker" ? "Seeker" : "Recruiter"} Account
                 <ArrowRight className="h-4 w-4" />

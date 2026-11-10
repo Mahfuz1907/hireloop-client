@@ -110,7 +110,7 @@ export default function PostNewJobPage() {
             {/* Publish Job Button */}
             <Button
               type="submit"
-              className="flex cursor-pointer items-center gap-2 rounded-xl bg-indigo-600 px-5 py-2.5 text-xs font-medium text-white shadow-lg shadow-indigo-600/20 hover:bg-indigo-500"
+              className="flex cursor-pointer items-center gap-2 rounded-xl bg-indigo-600 px-5 py-2.5 text-xs font-medium text-[#fff] shadow-lg shadow-indigo-600/20 hover:bg-indigo-500"
             >
               Publish Job <Send className="h-3.5 w-3.5" />
             </Button>
@@ -426,7 +426,7 @@ export default function PostNewJobPage() {
               <Button
                 type="submit"
 
-                className="cursor-pointer rounded-xl bg-indigo-600 px-6 py-2.5 text-xs font-medium text-white shadow-lg shadow-indigo-600/20 hover:bg-indigo-500"
+                className="cursor-pointer rounded-xl bg-indigo-600 px-6 py-2.5 text-xs font-medium text-[#fff] shadow-lg shadow-indigo-600/20 hover:bg-indigo-500"
               >
                 Publish Job Listing
               </Button>

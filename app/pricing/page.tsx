@@ -15,7 +15,7 @@ export default function CheckoutPage() {
   const [saveInfo, setSaveInfo] = useState(false)
 
   return (
-    <div className="flex min-h-screen flex-col justify-between bg-[#09090b] p-4 font-sans text-white selection:bg-blue-600 selection:text-white md:p-8 lg:p-12">
+    <div className="flex min-h-screen flex-col justify-between bg-[#09090b] p-4 font-sans text-white selection:bg-blue-600 selection:text-[#fff] md:p-8 lg:p-12">
       {/* ১. টপ হেডার বার */}
       <div className="mx-auto mb-8 flex w-full max-w-6xl items-center justify-between">
         <div className="flex items-center gap-4 text-zinc-400">
@@ -97,7 +97,7 @@ export default function CheckoutPage() {
         {/* ডান পাশ: স্ট্রাইপ স্টাইল পেমেন্ট ফর্ম */}
         <div className="space-y-6 lg:col-span-7">
           {/* Express Checkout (Link Button) */}
-          <button className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl bg-[#00D924] px-4 py-3.5 font-bold text-black shadow-lg transition hover:bg-[#00c220]">
+          <button className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl bg-[#00D924] px-4 py-3.5 font-bold text-[#000] shadow-lg transition hover:bg-[#00c220]">
             <span className="text-lg font-extrabold tracking-wider lowercase">
               🔗 link
             </span>
@@ -234,7 +234,7 @@ export default function CheckoutPage() {
           </div>
 
           {/* Pay Button */}
-          <button className="w-full cursor-pointer rounded-xl bg-blue-600 py-4 text-sm font-semibold tracking-wide text-white shadow-lg transition hover:bg-blue-700">
+          <button className="w-full cursor-pointer rounded-xl bg-blue-600 py-4 text-sm font-semibold tracking-wide text-[#fff] shadow-lg transition hover:bg-blue-700">
             Pay
           </button>
         </div>

@@ -68,7 +68,7 @@ export default async function SavedJobsPage() {
               <div className="mt-auto flex items-center justify-between border-t border-gray-800/60 pt-4">
                 <Link
                   href={`/jobs/${job.jobId}`}
-                  className="flex w-full cursor-pointer flex-row items-center justify-center gap-3 rounded-xl bg-blue-600 px-4 py-2 text-xs font-medium text-white shadow-sm transition hover:bg-blue-700"
+                  className="flex w-full cursor-pointer flex-row items-center justify-center gap-3 rounded-xl bg-blue-600 px-4 py-2 text-xs font-medium text-[#fff] shadow-sm transition hover:bg-blue-700"
                 >
                   View Details <ArrowRight className="h-3 w-3" />
                 </Link>

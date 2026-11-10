@@ -128,7 +128,7 @@ export default function LoginPage() {
               {/* Submit Button */}
               <Button
                 type="submit"
-                className="mt-2 flex w-full items-center justify-center gap-2 rounded-xl bg-indigo-600 py-6 font-medium text-white shadow-lg shadow-indigo-600/20 transition-all hover:bg-indigo-500"
+                className="mt-2 flex w-full items-center justify-center gap-2 rounded-xl bg-indigo-600 py-6 font-medium text-[#fff] shadow-lg shadow-indigo-600/20 transition-all hover:bg-indigo-500"
               >
                 Sign In
                 <ArrowRight className="h-4 w-4" />
