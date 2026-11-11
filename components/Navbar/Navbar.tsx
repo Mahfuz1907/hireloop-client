@@ -16,7 +16,8 @@ import { Avatar, AvatarFallback } from "../ui/avatar"
 import { Spinner } from "../ui/spinner"
 import { ThemeSwitcher } from "@/components/ThemeSwitcher"
 import { toast } from "sonner"
-import { useRouter } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
+import { cn } from "@/lib/utils"
 
 const UserInfo = () => {
   const { data: session, isPending } = useSession()
@@ -83,12 +84,16 @@ const LogOutButton = () => {
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
+  const pathname = usePathname()
   const isLoggedIn = UserInfo()
 
   const navLinks = [
     { name: "Browse Jobs", href: "/jobs" },
     { name: "Pricing", href: "/pricing" },
   ]
+
+  const isActive = (href: string) =>
+    pathname === href || pathname.startsWith(href + "/")
 
   if (isLoggedIn.isPending) {
     return (
@@ -120,7 +125,13 @@ export default function Navbar() {
               <Link
                 key={link.name}
                 href={link.href}
-                className="transition-colors hover:text-white"
+                aria-current={isActive(link.href) ? "page" : undefined}
+                className={cn(
+                  "transition-colors hover:text-white",
+                  isActive(link.href)
+                    ? "text-white underline decoration-indigo-400 decoration-2 underline-offset-8"
+                    : "text-zinc-300"
+                )}
               >
                 {link.name}
               </Link>
@@ -185,7 +196,13 @@ export default function Navbar() {
                       key={link.name}
                       href={link.href}
                       onClick={() => setIsOpen(false)}
-                      className="py-1 transition-colors hover:text-white"
+                      aria-current={isActive(link.href) ? "page" : undefined}
+                      className={cn(
+                        "py-1 transition-colors hover:text-white",
+                        isActive(link.href)
+                          ? "text-white underline decoration-indigo-400 decoration-2 underline-offset-8"
+                          : "text-zinc-300"
+                      )}
                     >
                       {link.name}
                     </Link>
