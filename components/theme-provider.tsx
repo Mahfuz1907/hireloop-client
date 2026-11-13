@@ -1,83 +1,69 @@
 "use client"
 
-import * as React from "react"
-import { ThemeProvider as NextThemesProvider, useTheme } from "next-themes"
+import React, { createContext, useContext, useEffect, useState } from "react"
 
-// The app's four themes. "light" and "dark" are the neutral shadcn palettes;
-// "green" and "blue" are tinted dark palettes (see app/globals.css).
-export const THEMES = ["light", "dark", "green", "blue"] as const
-export type AppTheme = (typeof THEMES)[number]
+type Theme = "dark" | "light" | "system"
 
-function ThemeProvider({
-  children,
-  ...props
-}: React.ComponentProps<typeof NextThemesProvider>) {
-  return (
-    <NextThemesProvider
-      attribute="class"
-      themes={[...THEMES]}
-      defaultTheme="system"
-      enableSystem
-      disableTransitionOnChange
-      // color-scheme is set per theme in globals.css (.dark/.green/.blue)
-      enableColorScheme={false}
-      {...props}
-    >
-      <ThemeHotkey />
-      {children}
-    </NextThemesProvider>
-  )
+interface ThemeContextType {
+  theme: Theme
+  setTheme: (theme: Theme) => void
 }
 
-function isTypingTarget(target: EventTarget | null) {
-  if (!(target instanceof HTMLElement)) {
-    return false
+const ThemeContext = createContext<ThemeContextType>({
+  theme: "dark",
+  setTheme: () => null,
+})
+
+export function ThemeProvider({
+  children,
+  defaultTheme = "system",
+}: {
+  children: React.ReactNode
+  attribute?: string
+  defaultTheme?: Theme
+  enableSystem?: boolean
+  disableTransitionOnChange?: boolean
+}) {
+  // ১. Lazy State Initialization দিয়ে লোকাল স্টোরেজ চেক করা হলো (কোনো setState লাগবে না)
+  const [theme, setThemeState] = useState<Theme>(() => {
+    if (typeof window !== "undefined") {
+      const stored = localStorage.getItem("theme") as Theme
+      if (stored) return stored
+    }
+    return defaultTheme
+  })
+
+  const updateDOM = (currentTheme: Theme) => {
+    const root = document.documentElement
+    root.classList.remove("light", "dark")
+
+    if (currentTheme === "system") {
+      const systemTheme = window.matchMedia("(prefers-color-scheme: dark)")
+        .matches
+        ? "dark"
+        : "light"
+      root.classList.add(systemTheme)
+    } else {
+      root.classList.add(currentTheme)
+    }
+  }
+
+  // ২. এখন শুধু থিম চেঞ্জ হলে DOM আপডেট করার জন্য useEffect ব্যবহার করা হলো
+  useEffect(() => {
+    updateDOM(theme)
+  }, [theme])
+
+  const setTheme = (newTheme: Theme) => {
+    setThemeState(newTheme)
+    localStorage.setItem("theme", newTheme)
+    updateDOM(newTheme)
   }
 
   return (
-    target.isContentEditable ||
-    target.tagName === "INPUT" ||
-    target.tagName === "TEXTAREA" ||
-    target.tagName === "SELECT"
+    <ThemeContext.Provider value={{ theme, setTheme }}>
+      {children}
+    </ThemeContext.Provider>
   )
 }
 
-function ThemeHotkey() {
-  const { resolvedTheme, setTheme } = useTheme()
-
-  React.useEffect(() => {
-    function onKeyDown(event: KeyboardEvent) {
-      if (event.defaultPrevented || event.repeat) {
-        return
-      }
-
-      if (event.metaKey || event.ctrlKey || event.altKey) {
-        return
-      }
-
-      if (event.key.toLowerCase() !== "d") {
-        return
-      }
-
-      if (isTypingTarget(event.target)) {
-        return
-      }
-
-      const current = THEMES.includes(resolvedTheme as AppTheme)
-        ? (resolvedTheme as AppTheme)
-        : "dark"
-      const next = THEMES[(THEMES.indexOf(current) + 1) % THEMES.length]
-      setTheme(next)
-    }
-
-    window.addEventListener("keydown", onKeyDown)
-
-    return () => {
-      window.removeEventListener("keydown", onKeyDown)
-    }
-  }, [resolvedTheme, setTheme])
-
-  return null
-}
-
-export { ThemeProvider }
+export const useTheme = () => useContext(ThemeContext)

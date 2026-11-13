@@ -86,9 +86,6 @@ export function SidebarNav({ role }: { role?: string }) {
   const items =
     role && role in menuItemsByRoles ? menuItemsByRoles[role as Role] : []
 
-  // Pick the most specific matching URL so e.g. "Dashboard" (/dashboard/admin)
-  // is not active while on "/dashboard/admin/users" (Users), while deeper
-  // nested pages (edit-jobs/[id]) still keep their parent item active.
   const activeUrl = items
     .filter(
       (item) => pathname === item.url || pathname.startsWith(item.url + "/")

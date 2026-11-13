@@ -19,6 +19,7 @@ import {
   GetBookMarksBySeeker,
 } from "@/app/lib/actions/application"
 import { GetSessionFromServer } from "@/app/lib/GettingSessions/GetSessionFromServer"
+import { GetUserById } from "@/app/lib/actions/users"
 
 interface DetailsTypes {
   params: Promise<{ id: string }>
@@ -26,6 +27,7 @@ interface DetailsTypes {
 
 const JobDetailsPage = async ({ params }: DetailsTypes) => {
   const user = await GetSessionFromServer()
+  const thisUser = await GetUserById(user?.id as string)
   const { id } = await params
   const jobData = await GetJobById(id)
   const jobDataPerSeeker = await GetBookMarksBySeeker(user?.email as string)
@@ -107,6 +109,7 @@ const JobDetailsPage = async ({ params }: DetailsTypes) => {
               job={jobData}
               bookmarkPerSeeker={jobDataPerSeeker}
               applicationPerSeeker={applicationDataPerSeeker}
+              thisUser={thisUser}
             />
           </div>
         </div>

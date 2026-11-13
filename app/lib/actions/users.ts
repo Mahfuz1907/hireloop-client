@@ -13,3 +13,10 @@ export const GetUsersByRole = async (role: string) => {
   const result = res.json()
   return result
 }
+
+// ------------------------------------------------Getting user by id------------------------------------------------
+export const GetUserById = async (id: string) => {
+  const res = await fetch(`${BASE_URL}/users/${id}`)
+  const result = await res.json()
+  return result
+}

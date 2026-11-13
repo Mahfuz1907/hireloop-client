@@ -6,6 +6,7 @@ export interface User {
   createdAt: string
   updatedAt: string
   role: "admin" | "seeker" | "recruiter"
+  premium: boolean
 }
 
 export interface Job {

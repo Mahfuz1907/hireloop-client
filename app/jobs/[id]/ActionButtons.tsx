@@ -5,9 +5,10 @@ import {
   AddBookMark,
   DeleteBookMark,
 } from "@/app/lib/actions/application"
+import { GetUserById } from "@/app/lib/actions/users"
 import { GetSessionFromClient } from "@/app/lib/GettingSessions/GetSessionFromClient"
 import { Button } from "@/components/ui/button"
-import { ApplicationTypes, BookMarkTypes, Job } from "@/lib/types"
+import { ApplicationTypes, BookMarkTypes, Job, User } from "@/lib/types"
 import { AppWindow, Bookmark, CheckCircle2 } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { toast } from "sonner"
@@ -16,21 +17,33 @@ interface ActionTypes {
   job: Job
   bookmarkPerSeeker: BookMarkTypes[]
   applicationPerSeeker: ApplicationTypes[]
+  thisUser: User
 }
 
 const ActionButtons = ({
   job,
   bookmarkPerSeeker,
   applicationPerSeeker,
+  thisUser,
 }: ActionTypes) => {
   const user = GetSessionFromClient()
+  console.log(thisUser)
   const router = useRouter()
   const isBookMarked = bookmarkPerSeeker.some((book) => book.jobId === job._id)
   const isApplied = applicationPerSeeker.some((app) => app.jobId === job._id)
+  const totalApplications = applicationPerSeeker.length
 
   const handleApply = async () => {
     if (user?.role !== "seeker") {
       router.push("/login")
+      return
+    }
+
+    if (totalApplications >= 5 && thisUser.premium !== true) {
+      router.push("/pricing")
+      toast.error("Only a premium user can apply to more than 5 jobs", {
+        position: "top-center",
+      })
       return
     }
 
