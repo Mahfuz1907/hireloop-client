@@ -1,7 +1,6 @@
 import { Geist, Geist_Mono } from "next/font/google"
 
 import "./globals.css"
-import { ThemeProvider } from "@/components/theme-provider"
 import { cn } from "@/lib/utils"
 import { Metadata } from "next"
 import NavFootWrapper from "@/components/NavFootWrapper"
@@ -38,13 +37,11 @@ export default function RootLayout({
       )}
     >
       <body>
-        <ThemeProvider>
-          <NavFootWrapper>
-            {/* main components */}
-            <div className="grow">{children}</div>
-          </NavFootWrapper>
-          <Toaster />
-        </ThemeProvider>
+        <NavFootWrapper>
+          {/* main components */}
+          <div className="grow">{children}</div>
+        </NavFootWrapper>
+        <Toaster />
       </body>
     </html>
   )
