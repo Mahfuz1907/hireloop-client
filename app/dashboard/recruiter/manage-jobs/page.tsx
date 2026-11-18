@@ -15,6 +15,7 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
+import { GetApplicationsByJob } from "@/app/lib/actions/application"
 
 const ManageJobPage = async () => {
   const session = await auth.api.getSession({
@@ -23,6 +24,11 @@ const ManageJobPage = async () => {
   const email = session?.user?.email
 
   const jobs = await GetJobByRecruiter(email as string)
+
+  const applicationsbyJob = async (id: string) => {
+    const jobCount = await GetApplicationsByJob(id)
+    return jobCount.length
+  }
   return (
     <div className="space-y-8 bg-[#09090b] p-4 font-sans text-white md:p-8">
       {/* Top Header & Breadcrumb */}
@@ -48,7 +54,7 @@ const ManageJobPage = async () => {
         </div>
 
         <Link href="/dashboard/recruiter/add-job">
-          <Button className="flex cursor-pointer items-center gap-2 rounded-xl bg-indigo-600 px-4 py-2.5 text-xs font-medium text-[#fff] shadow-lg shadow-indigo-600/20 hover:bg-indigo-500">
+          <Button className="flex cursor-pointer items-center gap-2 rounded-xl bg-indigo-600 px-4 py-2.5 text-xs font-medium text-[#ffffff] shadow-lg shadow-indigo-600/20 hover:bg-indigo-500">
             <Plus className="h-4 w-4" /> New Job Post
           </Button>
         </Link>
@@ -70,7 +76,7 @@ const ManageJobPage = async () => {
               below to post your first job opening.
             </p>
             <Link href="/dashboard/recruiter/add-job">
-              <Button className="rounded-xl bg-indigo-600 px-4 py-2 text-xs text-[#fff] hover:bg-indigo-500">
+              <Button className="rounded-xl bg-indigo-600 px-4 py-2 text-xs text-[#ffffff] hover:bg-indigo-500">
                 <Plus className="mr-1.5 h-4 w-4" /> Create Job Listing
               </Button>
             </Link>
@@ -137,7 +143,7 @@ const ManageJobPage = async () => {
                       </p>
                       <p className="mt-0.5 flex items-center gap-1 text-[11px] text-gray-400">
                         <MapPin className="h-3 w-3 shrink-0 text-gray-500" />
-                        <span className="max-w-[180px] truncate">
+                        <span className="max-w-45 truncate">
                           {job.isRemote
                             ? `Remote (${job.location})`
                             : job.location}
@@ -159,10 +165,13 @@ const ManageJobPage = async () => {
 
                     {/* Applicants */}
                     <TableCell className="px-6 py-4">
-                      {/* <span className="flex items-center gap-1.5 text-xs font-medium text-gray-300">
-              <Users className="h-3.5 w-3.5 text-gray-400" />
-              {job.applicantsCount} Candidates
-            </span> */}
+                      <Link
+                        href={`/dashboard/recruiter/manage-jobs/applications/${job._id}`}
+                        className="inline-flex items-center gap-1.5 rounded-md border border-gray-700 bg-gray-800 px-3 py-1.5 text-xs font-medium text-gray-200 shadow-sm transition-colors hover:bg-gray-700"
+                      >
+                        <Users className="h-3.5 w-3.5 text-gray-400" />
+                        View Applications ({applicationsbyJob(job._id)})
+                      </Link>
                     </TableCell>
 
                     {/* Status */}

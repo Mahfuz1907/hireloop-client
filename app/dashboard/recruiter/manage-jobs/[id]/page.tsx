@@ -19,7 +19,6 @@ interface JobDetailsTypes {
 const JobDetailsPage = async ({ params }: JobDetailsTypes) => {
   const { id } = await params
   const job = await GetJobById(id)
-  console.log(job)
   return (
     <div className="min-h-screen bg-[#09090b] px-4 py-8 font-sans text-white md:px-8 lg:px-12">
       <div className="mx-auto max-w-6xl space-y-8">

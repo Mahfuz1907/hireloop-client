@@ -62,3 +62,10 @@ export const CancelApplication = async (id: string) => {
   const result = res.json()
   return result
 }
+
+// ---------------------------------------------------------Get application by job------------------------------------------
+export const GetApplicationsByJob = async (id: string) => {
+  const res = await fetch(`${BASE_URL}/applications/job/${id}`)
+  const result = await res.json()
+  return result
+}

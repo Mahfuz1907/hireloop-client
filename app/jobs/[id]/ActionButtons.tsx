@@ -5,7 +5,6 @@ import {
   AddBookMark,
   DeleteBookMark,
 } from "@/app/lib/actions/application"
-import { GetUserById } from "@/app/lib/actions/users"
 import { GetSessionFromClient } from "@/app/lib/GettingSessions/GetSessionFromClient"
 import { Button } from "@/components/ui/button"
 import { ApplicationTypes, BookMarkTypes, Job, User } from "@/lib/types"
@@ -140,7 +139,7 @@ const ActionButtons = ({
         className={`h-11 rounded-xl px-6 text-xs font-medium shadow-lg transition ${
           isApplied
             ? "cursor-default border border-emerald-500/30 bg-emerald-600/20 text-emerald-400"
-            : "bg-indigo-600 text-[#fff] shadow-indigo-600/20 hover:bg-indigo-500"
+            : "bg-indigo-600 text-[#ffffff] shadow-indigo-600/20 hover:bg-indigo-500"
         }`}
       >
         {isApplied ? (
