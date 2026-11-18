@@ -9,6 +9,7 @@ interface ApplicationsPerPageTypes {
 const ApplicationsPerJobPage = async ({ params }: ApplicationsPerPageTypes) => {
   const { id } = await params
   const applications = await GetApplicationsByJob(id)
+  console.log(applications)
 
   return (
     <div className="min-h-screen bg-gray-950 p-6 text-gray-100">
@@ -19,7 +20,7 @@ const ApplicationsPerJobPage = async ({ params }: ApplicationsPerPageTypes) => {
         </p>
 
         {/* Applications Table Component */}
-        <ApplicationsTable initialApplications={applications} />
+        <ApplicationsTable applications={applications} />
       </div>
     </div>
   )

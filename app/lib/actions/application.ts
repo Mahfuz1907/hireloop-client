@@ -1,4 +1,5 @@
 import { AddApplicationTypes, AddBookMarkTypes } from "@/lib/types"
+import { authFetch } from "../GettingSessions/GetSessionFromServer"
 
 const BASE_URL = process.env.NEXT_PUBLIC_API
 
@@ -65,7 +66,22 @@ export const CancelApplication = async (id: string) => {
 
 // ---------------------------------------------------------Get application by job------------------------------------------
 export const GetApplicationsByJob = async (id: string) => {
-  const res = await fetch(`${BASE_URL}/applications/job/${id}`)
+  const result = await authFetch(`${BASE_URL}/applications/job/${id}`)
+  return result
+}
+
+// ---------------------------------------------------------Update application status------------------------------------------
+export const UpdateApplicationStatus = async (
+  id: string,
+  data: { status: string }
+) => {
+  const res = await fetch(`${BASE_URL}/applications/update/${id}`, {
+    method: "PATCH",
+    headers: {
+      "content-type": "application/json",
+    },
+    body: JSON.stringify(data),
+  })
   const result = await res.json()
   return result
 }
